@@ -17,8 +17,8 @@ class CreateGroupsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('group_vkid');
-            $table->integer('url');
-            $table->integer('info');
+            $table->string('url');
+            $table->string('info');
             $table->timestamps();
         });
     }
