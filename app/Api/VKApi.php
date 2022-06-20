@@ -31,6 +31,7 @@ class VKApi extends Model
 
     public function wallSendPost($params)
     {
+        $params['owner_id']= '-'.$this->group_id;
         if(!isset($params['attachments'])) {
             if(isset($this->attachments)){
                 foreach ($this->attachments as $key => $attach) {
@@ -148,12 +149,13 @@ class VKApi extends Model
                 shuffle($audio);
             }
             $this->attachments[] = $music . $audio[0].", ".$audio[1];
-            return $this->attachments;
+            return $music . $audio[0].", ".$audio[1];
 
         }
         else {//Или обычный пост с 1 треком
-            $this->attachments[] = $audio[array_rand($audio)];
-            return $this->attachments;
+            $a = $audio[array_rand($audio)];
+            $this->attachments[] = $a;
+            return $a;
         }
     }
 
