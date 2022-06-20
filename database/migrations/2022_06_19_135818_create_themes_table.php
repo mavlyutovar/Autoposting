@@ -15,10 +15,12 @@ class CreateThemesTable extends Migration
     {
         Schema::create('themes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('url_picture_board');
-            $table->string('url_audio_board');
-            $table->json('text');
+            $table->string('name')->nullable();
+            $table->string('url_picture_board')->nullable();
+            $table->string('url_audio_board')->nullable();
+            $table->json('text')->nullable();
+            $table->integer('userid');
+            $table->boolean('ready')->default(false);
             $table->timestamps();
         });
     }
