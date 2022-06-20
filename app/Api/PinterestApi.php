@@ -7,15 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class PinterestApi extends Model
 {
-    private $link;
 
-    public function __construct($link) {
-        $this->link = $link;
+    public function __construct() {
     }
 
-    public function getImagesFromBoard()
+    public function getImagesFromBoard($link)
     {
-        $html       = file_get_contents($this->link);
+        $html       = file_get_contents($link);
         $dom        = new DOMDocument;
         $srcPins    = null;
 

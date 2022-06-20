@@ -11,11 +11,13 @@ class VKApi extends Model
     private $token;
     private $api;
     private $photos;
+    private $group_id;
     public $version = "5.131";
     public $attachments;
 
-    public function __construct($token = null)
+    public function __construct($group_id, $token = null)
     {
+        $this->group_id = $group_id;
         if(!isset($token)) {
             $this->token = env('VK_TOKEN', false);
         }
@@ -44,10 +46,10 @@ class VKApi extends Model
         return $this->api->request('wall.post', $params, $this->token);
     }
 
-    public function wallAddPhoto($group_id, $srcImage) {
-        $image_path = Storage::disk('public')->path($group_id.'lastImage.png');
+    public function wallAddPhoto($srcImage) {
+        $image_path = Storage::disk('public')->path($this->group_id.'lastImage.png');
         copy($srcImage, $image_path);
-        $params['group_id']    = $group_id;
+        $params['group_id']    = $this->group_id;
         $uploadServerInfo = $this->api->request('photos.getWallUploadServer', $params)['response'];
 
         $upload = $this->uploadFile($uploadServerInfo['upload_url'], $image_path);
@@ -62,13 +64,13 @@ class VKApi extends Model
         return $this->attachments;
     }
 
-    public function wallAddPhotoFromPub($group_id, $photo_owner_id) {
+    public function wallAddPhotoFromPub($photo_owner_id) {
 
         $params['photos'] = $photo_owner_id;
         $params['extended'] = 1;
         $photoInfo = $this->api->request('photos.getById', $params, $this->token);
         $srcImage = $photoInfo['response'][0]["orig_photo"]['url'];
-        return $this->wallAddPhoto($group_id, $srcImage);
+        return $this->wallAddPhoto($srcImage);
     }
 
     public function getPhotosFromPub($group_id) {
