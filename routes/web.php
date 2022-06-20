@@ -12,5 +12,9 @@
 */
 
 Route::get('/', "GroupController@index")->name('index');
-Route::get('/create-theme', "ThemeController@create")->name('create-theme');
+Route::get('/create-theme', "GroupController@index")->name('create-theme');
 
+
+Auth::routes();
+//
+//Route::get('/home', 'HomeController@index')->name('home');
