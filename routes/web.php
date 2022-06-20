@@ -11,4 +11,6 @@
 |
 */
 
-Route::get('/', "GroupController@index");
+Route::get('/', "GroupController@index")->name('index');
+Route::get('/create-theme', "ThemeController@create")->name('create-theme');
+

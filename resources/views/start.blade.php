@@ -87,9 +87,21 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Thismood
-                </div>
+                <form action="{{ route('create-theme') }}" method="get">
+                    <input type="text" name="text">
+                    <input type="submit">
+                </form>
+                @if(count($themes))
+                    @foreach($themes as $theme)
+                        <div class="title m-b-md">
+                            {{ $theme->name }}
+                        </div>
+                        <div class="title m-b-md">
+                            <a href="{{ route('index') }}">Start</a>
+                        </div>
+                    @endforeach
+                    {{ $themes->links() }}
+                @endif
             </div>
         </div>
     </body>

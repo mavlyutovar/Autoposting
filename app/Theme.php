@@ -47,12 +47,12 @@ class Theme extends Model
         if(isset($pictureLoad)) {
             $publishTime        = time()+(rand(1, 59)*rand(1, 3)*60);
             $text   =   "skaaaaaaaaaay";
+            $audio  =   $this->vk->wallAddThismoodAudio();
 
-            $this->vk->wallAddThismoodAudio();
             $this->newPostLog->text_value = $text;
             $this->newPostLog->group_id = $this->group->id;
             $this->newPostLog->theme_id = $this->id;
-            $this->newPostLog->audio_value = $this->id;
+            $this->newPostLog->audio_value = $audio;
             $params = [
                 'from_group'    => 1,
                 'message'       => $text,
