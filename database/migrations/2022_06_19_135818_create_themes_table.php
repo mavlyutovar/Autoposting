@@ -20,7 +20,7 @@ class CreateThemesTable extends Migration
             $table->string('url_audio_board')->nullable();
             $table->json('text')->nullable();
             $table->integer('userid');
-            $table->boolean('ready')->default(false);
+            $table->boolean('ready')->nullable();
             $table->timestamps();
         });
     }
