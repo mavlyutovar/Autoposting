@@ -29,6 +29,8 @@ class GroupController extends Controller
 
     public function store(Request $request)
     {
+        $themes = Theme::all();
+        return ['data' => $themes];
 //        $this->validate($request, [
 //            'name' => 'required',
 //            'description' => 'required'
