@@ -20,7 +20,7 @@
         data:function(){
             return{
                 theme: [],
-                percent: 1,
+                percent: 10,
             }
         },
         mounted() {
@@ -28,25 +28,23 @@
         },
         methods: {
             update: function() {
-                this.percent = 0;
+                this.percent = 19;
                 axios.post('/get-theme', {
                     text: this.percent,
                     //description: this.description
                 }).then((response) => {
                     this.theme = response.data;
                     if(typeof(this.theme.text) != "undefined" && this.theme.text !== null) {
-                        this.percent += 25;
-                    }
-                    if(typeof(this.theme.name) != "undefined" && this.theme.name !== null) {
-                        this.percent += 25;
-                        console.log("this.theme");
+                        if(this.theme.text.length > 50) {
+                            this.percent += 33;
+                        }
                     }
                     if(typeof(this.theme.url_picture_board) != "undefined" && this.theme.url_picture_board !== null) {
-                        this.percent += 25;
+                        this.percent += 33;
                         console.log("this.theme");
                     }
                     if(typeof(this.theme.url_audio_board) != "undefined" && this.theme.url_audio_board !== null) {
-                        this.percent += 25;
+                        this.percent += 33;
                         console.log("this.theme");
                     }
                 });

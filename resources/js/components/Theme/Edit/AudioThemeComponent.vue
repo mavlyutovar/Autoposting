@@ -36,8 +36,6 @@
 </template>
 
 <script>
-
-    import Progress from './ProgressCreateTehme'
     export default {
         data:function(){
             return{
@@ -52,9 +50,6 @@
         },
         mounted() {
             this.update();
-        },
-        components: {
-            Progress
         },
         methods: {
             add: function() {
