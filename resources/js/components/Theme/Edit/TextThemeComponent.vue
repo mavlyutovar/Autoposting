@@ -42,10 +42,7 @@
                 theme: {
                     text: []
                 },
-                is_refresh: false,
-                id: 0,
                 textAdd: "",
-                params: [],
             }
         },
         mounted() {
@@ -57,18 +54,13 @@
                     text: this.textAdd,
                     //description: this.description
                 }).then((response) => {
-                    console.log(response.data)
                     this.theme = response.data
                 });
             },
             update: function() {
                 this.is_refresh = true;
-                axios.get('/show-text').then((response) => {
-                    this.textCount = 0;
-                    console.log(response.data)
+                axios.get('/show-text-theme').then((response) => {
                     this.theme = response.data;
-                    this.is_refresh = false;
-                    this.id++;
                 });
             },
             del: function(id) {
