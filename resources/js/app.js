@@ -31,4 +31,15 @@ Vue.component('prop-component', require('./components/PropComponent.vue').defaul
 
 const app = new Vue({
     el: '#app',
+    data: {
+        currentComponent: "prop-component"
+    },
+    methods: {
+        showComp1() {
+            this.currentComponent = "create-theme-component";
+        },
+        showMText() {
+            this.currentComponent = "prop-component";
+        }
+    },
 });

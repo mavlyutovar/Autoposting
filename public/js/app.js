@@ -1939,7 +1939,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! exports provided: default */
 /***/ (function(module, exports) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: e:\\HTML\\OpenServer\\domains\\Autoposting\\resources\\js\\components\\PropComponent.vue: Unexpected token, expected \",\" (21:16)\n\n\u001b[0m \u001b[90m 19 |\u001b[39m     data\u001b[33m:\u001b[39m\u001b[36mfunction\u001b[39m(){\u001b[0m\n\u001b[0m \u001b[90m 20 |\u001b[39m         \u001b[36mreturn\u001b[39m{\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 21 |\u001b[39m             data[]\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m                 \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 22 |\u001b[39m         }\u001b[0m\n\u001b[0m \u001b[90m 23 |\u001b[39m     }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 24 |\u001b[39m     props\u001b[33m:\u001b[39m [\u001b[0m\n    at instantiate (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:72:32)\n    at constructor (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:358:12)\n    at Parser.raise (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:3341:19)\n    at Parser.unexpected (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:3379:16)\n    at Parser.expect (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:4008:28)\n    at Parser.parseObjectLike (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13590:14)\n    at Parser.parseExprAtom (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12993:23)\n    at Parser.parseExprSubscripts (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12643:23)\n    at Parser.parseUpdate (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12622:21)\n    at Parser.parseMaybeUnary (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12593:23)\n    at Parser.parseMaybeUnaryOrPrivate (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12387:61)\n    at Parser.parseExprOps (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12394:23)\n    at Parser.parseMaybeConditional (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12364:23)\n    at Parser.parseMaybeAssign (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12316:21)\n    at Parser.parseExpressionBase (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12252:23)\n    at e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12246:39\n    at Parser.allowInAnd (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14341:16)\n    at Parser.parseExpression (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12246:17)\n    at Parser.parseReturnStatement (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:15053:28)\n    at Parser.parseStatementContent (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14692:21)\n    at Parser.parseStatement (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14638:17)\n    at Parser.parseBlockOrModuleBlockBody (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:15281:25)\n    at Parser.parseBlockBody (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:15272:10)\n    at Parser.parseBlock (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:15256:10)\n    at Parser.parseFunctionBody (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13946:24)\n    at Parser.parseFunctionBodyAndFinish (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13930:10)\n    at e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:15431:12\n    at Parser.withSmartMixTopicForbiddingContext (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14318:14)\n    at Parser.parseFunction (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:15430:10)\n    at Parser.parseFunctionOrFunctionSent (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13275:17)\n    at Parser.parseExprAtom (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12997:21)\n    at Parser.parseExprSubscripts (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12643:23)\n    at Parser.parseUpdate (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12622:21)\n    at Parser.parseMaybeUnary (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12593:23)\n    at Parser.parseMaybeUnaryOrPrivate (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12387:61)\n    at Parser.parseExprOps (e:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12394:23)");
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: E:\\HTML\\OpenServer\\domains\\Autoposting\\resources\\js\\components\\PropComponent.vue: Unexpected token, expected \",\" (58:14)\n\n\u001b[0m \u001b[90m 56 |\u001b[39m     }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 57 |\u001b[39m     components\u001b[33m:\u001b[39m {\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 58 |\u001b[39m         create\u001b[33m-\u001b[39mtheme\u001b[33m-\u001b[39mcomponent\u001b[0m\n\u001b[0m \u001b[90m    |\u001b[39m               \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 59 |\u001b[39m     }\u001b[33m,\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 60 |\u001b[39m     methods\u001b[33m:\u001b[39m {\u001b[0m\n\u001b[0m \u001b[90m 61 |\u001b[39m         add\u001b[33m:\u001b[39m \u001b[36mfunction\u001b[39m() {\u001b[0m\n    at instantiate (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:72:32)\n    at constructor (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:358:12)\n    at Parser.raise (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:3341:19)\n    at Parser.unexpected (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:3379:16)\n    at Parser.expect (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:4008:28)\n    at Parser.parseObjectLike (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13590:14)\n    at Parser.parseExprAtom (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12993:23)\n    at Parser.parseExprSubscripts (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12643:23)\n    at Parser.parseUpdate (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12622:21)\n    at Parser.parseMaybeUnary (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12593:23)\n    at Parser.parseMaybeUnaryOrPrivate (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12387:61)\n    at Parser.parseExprOps (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12394:23)\n    at Parser.parseMaybeConditional (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12364:23)\n    at Parser.parseMaybeAssign (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12316:21)\n    at E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12274:39\n    at Parser.allowInAnd (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14347:12)\n    at Parser.parseMaybeAssignAllowIn (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12274:17)\n    at Parser.parseObjectProperty (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13763:101)\n    at Parser.parseObjPropValue (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13796:100)\n    at Parser.parsePropertyDefinition (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13713:10)\n    at Parser.parseObjectLike (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:13603:21)\n    at Parser.parseExprAtom (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12993:23)\n    at Parser.parseExprSubscripts (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12643:23)\n    at Parser.parseUpdate (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12622:21)\n    at Parser.parseMaybeUnary (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12593:23)\n    at Parser.parseMaybeUnaryOrPrivate (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12387:61)\n    at Parser.parseExprOps (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12394:23)\n    at Parser.parseMaybeConditional (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12364:23)\n    at Parser.parseMaybeAssign (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12316:21)\n    at E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12274:39\n    at Parser.allowInAnd (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14341:16)\n    at Parser.parseMaybeAssignAllowIn (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:12274:17)\n    at Parser.parseExportDefaultExpression (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:16012:22)\n    at Parser.parseExport (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:15900:31)\n    at Parser.parseStatementContent (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14754:27)\n    at Parser.parseStatement (E:\\HTML\\OpenServer\\domains\\Autoposting\\node_modules\\@babel\\parser\\lib\\index.js:14638:17)");
 
 /***/ }),
 
@@ -37576,32 +37576,161 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c(
-          "div",
-          { staticClass: "card" },
-          [
-            _c("div", { staticClass: "card-header" }, [_vm._v("Enter Name")]),
-            _vm._v(" "),
-            _vm._l(_vm.data, function (url) {
-              return _c("div", { staticClass: "card-body" }, [
-                _vm._v(
-                  "\n                    " +
-                    _vm._s(url.name) +
-                    "\n                "
-                ),
-              ])
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-7 col-lg-7 bg-light" }, [
+      _c("div", { staticClass: "card mb-4" }, [
+        _c("div", { staticClass: "card-header" }, [
+          _vm._v(
+            "Вариантов текста для поста: " +
+              _vm._s(_vm.theme.text.length) +
+              " шт."
+          ),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c(
+            "ul",
+            { staticClass: "list-group" },
+            _vm._l(_vm.theme.text, function (item, index) {
+              return _c(
+                "li",
+                {
+                  staticClass:
+                    "list-group-item d-flex justify-content-between align-items-center",
+                },
+                [
+                  _c("span", { staticClass: "text-dark" }, [
+                    _vm._v(_vm._s(index + 1)),
+                  ]),
+                  _vm._v(" "),
+                  _c("span", { staticClass: "mr-auto p-2" }, [
+                    _vm._v(_vm._s(item)),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-warning",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function ($event) {
+                          return _vm.del(index)
+                        },
+                      },
+                    },
+                    [
+                      _c(
+                        "svg",
+                        {
+                          staticClass: "bi bi-trash3",
+                          attrs: {
+                            xmlns: "http://www.w3.org/2000/svg",
+                            width: "16",
+                            height: "16",
+                            fill: "currentColor",
+                            viewBox: "0 0 16 16",
+                          },
+                        },
+                        [
+                          _c("path", {
+                            attrs: {
+                              d: "M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z",
+                            },
+                          }),
+                        ]
+                      ),
+                    ]
+                  ),
+                ]
+              )
             }),
-          ],
-          2
-        ),
+            0
+          ),
+        ]),
+      ]),
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-5 col-lg-5" }, [
+      _c("div", { staticClass: "d-flex" }, [
+        _c("div", { staticClass: "card mb-4" }, [
+          _c("div", { staticClass: "card-header" }, [
+            _vm._v("Введите предложение"),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.textAdd,
+                  expression: "textAdd",
+                },
+              ],
+              staticClass: "form-control",
+              attrs: { id: "exampleFormControlTextarea1", rows: "3" },
+              domProps: { value: _vm.textAdd },
+              on: {
+                input: function ($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.textAdd = $event.target.value
+                },
+              },
+            }),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass:
+                  "d-flex justify-content-around align-items-center mt-3",
+              },
+              [
+                _c(
+                  "button",
+                  {
+                    staticClass: "justify-content-end btn btn-success",
+                    attrs: {
+                      "data-toggle": "tooltip",
+                      "data-placement": "left",
+                      title: "Добавьте несколько сообщений одной тематики",
+                      type: "submit",
+                    },
+                    on: {
+                      click: function ($event) {
+                        return _vm.add()
+                      },
+                    },
+                  },
+                  [_vm._v("Добавить")]
+                ),
+              ]
+            ),
+          ]),
+        ]),
       ]),
     ]),
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", [
+      _vm._v(
+        "Добавьте несколько сообщений одной тематики. Поддержиаются смайлы "
+      ),
+      _c("a", { attrs: { href: "https://getemoji.com/" } }, [
+        _vm._v("Ctrl+C Ctrl+V"),
+      ]),
+      _vm._v("."),
+    ])
+  },
+]
 render._withStripped = true
 
 
@@ -49853,7 +49982,18 @@ Vue.component('prop-component', __webpack_require__(/*! ./components/PropCompone
  */
 
 var app = new Vue({
-  el: '#app'
+  el: '#app',
+  data: {
+    currentComponent: "prop-component"
+  },
+  methods: {
+    showComp1: function showComp1() {
+      this.currentComponent = "create-theme-component";
+    },
+    showMText: function showMText() {
+      this.currentComponent = "prop-component";
+    }
+  }
 });
 
 /***/ }),
@@ -49976,15 +50116,14 @@ __webpack_require__.r(__webpack_exports__);
 /*!***************************************************!*\
   !*** ./resources/js/components/PropComponent.vue ***!
   \***************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _PropComponent_vue_vue_type_template_id_0a70d77f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PropComponent.vue?vue&type=template&id=0a70d77f& */ "./resources/js/components/PropComponent.vue?vue&type=template&id=0a70d77f&");
 /* harmony import */ var _PropComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PropComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/PropComponent.vue?vue&type=script&lang=js&");
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _PropComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _PropComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
-/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -50014,7 +50153,7 @@ component.options.__file = "resources/js/components/PropComponent.vue"
 /*!****************************************************************************!*\
   !*** ./resources/js/components/PropComponent.vue?vue&type=script&lang=js& ***!
   \****************************************************************************/
-/*! no static exports found */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50060,8 +50199,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! e:\HTML\OpenServer\domains\Autoposting\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! e:\HTML\OpenServer\domains\Autoposting\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! E:\HTML\OpenServer\domains\Autoposting\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! E:\HTML\OpenServer\domains\Autoposting\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

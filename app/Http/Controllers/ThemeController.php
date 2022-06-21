@@ -39,7 +39,7 @@ class ThemeController extends Controller
                 $del_id = $request->all()['id'];
 
                 unset($allText->text[$del_id]);
-                sort($allText->text);
+                array_splice($allText->text, $del_id, 0);
 
             }
 
@@ -54,8 +54,8 @@ class ThemeController extends Controller
 
     public function index()
     {
-        dd("ok");
-        return Theme::all();
+        $theme = Theme::where("ready", null)->first();
+        return view("home", [ 'data' => $theme]);
     }
 
     public function create()

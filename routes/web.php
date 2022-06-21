@@ -13,7 +13,7 @@
 
 use App\Http\Controllers\ThemeController;
 
-Route::get('/', "GroupController@index")->name('index');
+Route::get('/', "ThemeController@index")->name('index');
 Route::get('/show-text', "ThemeController@showText")->name('show-text');
 Route::post('/update-text-theme', "ThemeController@update")->name('update-text-theme');
 Route::post('/add-text-theme', "ThemeController@addText")->name('add-text-theme');
