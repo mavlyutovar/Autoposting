@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class ThemeController extends Controller
 {
 
-    public function addText(Request $request)
+    public function addText(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
     {
         $theme = Theme::where("ready", 0)->first();
         $allText = json_decode($theme->text);
@@ -29,7 +29,7 @@ class ThemeController extends Controller
         return $theme->text;
     }
 
-    public function update(Request $request)
+    public function updateText(Request $request)
     {
         $theme = Theme::where("ready", 0)->first();
 
@@ -52,9 +52,102 @@ class ThemeController extends Controller
         return $theme->text;
     }
 
+    public function addAudio(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
+    {
+        $theme = Theme::where("ready", 0)->first();
+        $allAudio = json_decode($theme->url_audio_board);
+
+        if(isset($request->all()['url_audio_board'])) {
+            if(isset($theme->url_audio_board)) {
+                $allAudio->audioId[] = $request->all()['url_audio_board'];
+            }
+        }
+        $theme->url_audio_board = json_encode($allAudio);
+        $theme->update();
+        return $theme->url_audio_board;
+    }
+
+    public function showAudio(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+        return $theme->url_audio_board;
+    }
+
+    public function updateAudio(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+
+        if(isset($theme->url_audio_board)) {
+            $allAudio = json_decode($theme->url_audio_board);
+            if(isset($request->all()['id'])) {
+                $del_id = $request->all()['id'];
+
+                unset($allAudio->audioId[$del_id]);
+                array_splice($allAudio->audioId, $del_id, 0);
+
+            }
+
+            $theme->url_audio_board = json_encode($allAudio);
+            $theme->update();
+        }
+        else {
+            $theme->url_audio_board = json_encode(["audioId" => []]);
+        }
+        return $theme->url_audio_board;
+    }
+
+    public function addPicture(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+        if(isset($request->all()['url_picture_board'])) {
+            $theme->url_picture_board = $request->all()['url_picture_board'];
+            $theme->update();
+        }
+        return $theme->url_picture_board;
+    }
+
+    public function showPicture(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+        return $theme->url_picture_board;
+    }
+
+    public function updatePicture(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+
+        $theme->url_picture_board = null;
+        $theme->update();
+        return $theme->url_picture_board;
+    }
+
+
+    public function getPercentReadyTheme(Request $request) {
+        $theme      = Theme::where("ready", 0)->first();
+        $step    = 25;
+        $percent    = 25;
+
+        if(isset($theme->url_picture_board)){
+            $percent += $step;
+        }
+        if(isset($theme->url_audio_board)) {
+            $allAudio = json_decode($theme->url_audio_board);
+            if(count($allAudio->audioId) > 0) {
+                $percent += $step;
+            }
+        }
+        if(isset($theme->text)) {
+            $allText = json_decode($theme->text);
+            if(count($allText->text) > 0) {
+                $percent += $step;
+            }
+        }
+        return ["data" => $percent];
+    }
+
     public function getThemeModel(Request $request) {
         $theme = Theme::where("ready", 0)->first();
-        return $theme;
+        return json_encode($theme);
     }
 
     public function getAllTheme(Request $request) {
