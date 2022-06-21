@@ -1,18 +1,20 @@
 <template>
     <div>
 
-        <div class="d-flex justify-content-between mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="d-flex justify-content-start">
                 <h3>{{ theme.name }}</h3>
             </div>
+            <div class="d-flex justify-content-center  col-6">
+                <Progress v-on:remove="update()" ref="updateProgress"></Progress>
+            </div>
             <div class="d-flex justify-content-end">
                 <button @click="setTextTheme()" type="button" class="btn btn-secondary m-1">Текст</button>
-                <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Картинки</button>
+                <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Изображения</button>
                 <button @click="setAudioTheme()" type="button" class="btn btn-secondary m-1">Аудио</button>
                 <button @click="setSettingsTheme()" type="button" class="btn btn-info m-1">Запланировать</button>
             </div>
         </div>
-        <Progress></Progress>
 
         <Component :is="currentComponent" :data="theme"></Component>
     </div>
@@ -37,10 +39,6 @@ export default {
             theme: {
                 text: []
             },
-            is_refresh: false,
-            id: 0,
-            textAdd: "",
-            params: [],
             currentComponent: "set-text-theme"
         }
     },
@@ -63,15 +61,19 @@ export default {
         },
         setTextTheme: function() {
             this.currentComponent = "set-text-theme";
+            this.$refs.updateProgress.update();
         },
         setAudioTheme: function() {
             this.currentComponent = "set-audio-theme";
+            this.$refs.updateProgress.update();
         },
         setPictureTheme: function() {
             this.currentComponent = "set-picture-theme";
+            this.$refs.updateProgress.update();
         },
         setSettingsTheme: function() {
             this.currentComponent = "set-setting-theme";
+            this.$refs.updateProgress.update();
         }
     }
 }
