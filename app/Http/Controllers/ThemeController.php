@@ -52,6 +52,12 @@ class ThemeController extends Controller
         return $theme->text;
     }
 
+    public function getThemeModel(Request $request) {
+        $theme = Theme::where("ready", null)->first();
+        return $theme;
+    }
+
+
     public function index()
     {
         $theme = Theme::where("ready", null)->first();

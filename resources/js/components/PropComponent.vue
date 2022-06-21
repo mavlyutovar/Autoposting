@@ -37,7 +37,7 @@
 
 <script>
 
-    Vue.component('create-theme-component', require('./CreateThemeComponent.vue').default);
+    import Progress from './ProgressCreateTehme'
     export default {
         data:function(){
             return{
@@ -47,7 +47,6 @@
                 is_refresh: false,
                 id: 0,
                 textAdd: "",
-                textCount: 0,
                 params: [],
             }
         },
@@ -55,16 +54,14 @@
             this.update();
         },
         components: {
-            create-theme-component
+            Progress
         },
         methods: {
             add: function() {
-                console.log(this.params)
                 axios.post('/add-text-theme', {
                     text: this.textAdd,
                     //description: this.description
                 }).then((response) => {
-                    this.textCount = 0;
                     console.log(response.data)
                     this.theme = response.data
                 });
@@ -84,7 +81,6 @@
                     id: id,
                     //description: this.description
                 }).then((response) => {
-                    this.textCount = 0;
                     this.theme = response.data
                 });
             }
