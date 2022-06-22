@@ -6,7 +6,7 @@
                         <div class="card-body">
                             <span class="mb-3">
                                 Добавьте источник изображений. Можно указать доски сайта <a href="https://www.pinterest.ru/kdnamehere/thismood-picture/">https://www.pinterest.ru/</a>.
-                                Либо укажите <b>ID</b> любой открытой группы Вконтакте. Система автоматически будет подгружать случайную картинку из набора доски или группы ВК.
+                                Либо укажите любой <b>ID</b> открытой группы Вконтакте. Система автоматически будет подгружать случайную картинку из набора доски или группы ВК.
                             </span>
                             <div v-if="change" class="d-flex justify-content-left align-items-center mb-3">
                                 <button @click="del(userid)" type="button" class="btn btn-outline-danger">
