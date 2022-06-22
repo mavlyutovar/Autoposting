@@ -1,6 +1,6 @@
 <template>
     <div class="progress progressAnim" :style=" {width: percent.data+'%'}">
-        <div class="progressAnim progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{percent.data}}%</div>
+        <div class="progressAnim progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Чем больше эта полоса, тем больше вариантов для постов</div>
     </div>
 </template>
 <style>

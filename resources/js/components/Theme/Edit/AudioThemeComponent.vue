@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-7 col-lg-7 bg-light">
             <div class="card mb-4">
-                <div class="card-header">Количество треков: {{theme.audioId.length}} аудио.</div>
+                <div class="card-header">Количество треков: {{theme.audioId.length}} шт.</div>
                 <div class="card-body">
                     <ul class="list-group">
                         <li v-for="(item, index) in theme.audioId" class="list-group-item d-flex justify-content-between align-items-center">

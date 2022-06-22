@@ -1,6 +1,6 @@
 <template>
             <div class="row">
-                <div class="col-7 col-lg-7 bg-light">
+                <div class="bg-light">
                     <div class="card mb-4">
                         <div class="card-header">Вариантов текста для поста: {{theme.text.length}} шт.</div>
                         <div class="card-body">
@@ -15,20 +15,6 @@
                                     </button>
                                 </li>
                             </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-5 col-lg-5">
-                    <div class="d-flex">
-                        <div class="card mb-4">
-                            <div class="card-header">Введите предложение</div>
-                            <div class="card-body">
-                                <span>Добавьте несколько сообщений одной тематики. Поддержиаются смайлы <a href="https://getemoji.com/">Ctrl+C Ctrl+V</a>.</span>
-                                <textarea v-model="textAdd" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                <div class="d-flex justify-content-around align-items-center mt-3">
-                                    <button @click="add()" data-toggle="tooltip" data-placement="left" title="Добавьте несколько сообщений одной тематики" type="submit" class="justify-content-end btn btn-success">Добавить</button>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
