@@ -1,6 +1,6 @@
 <template>
     <div class="progress progressAnim" :style=" {width: percent.data+'%'}">
-        <div class="progressAnim progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">Чем больше эта полоса, тем больше вариантов для постов</div>
+        <div class="progressAnim progress-bar progress-bar-striped bg-success progress-bar-animated" role="progressbar" style="width: 100%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">{{title}}</div>
     </div>
 </template>
 <style>
@@ -15,7 +15,10 @@
         data:function(){
             return{
                 theme: [],
-                percent: 10,
+                title: "Еще",
+                percent: {
+                    data:0,
+                },
             }
         },
         mounted() {
@@ -23,17 +26,38 @@
         },
         methods: {
             update: function() {
-                this.percent = 19;
+                this.percent = 0;
                 axios.post('/how-ready', {
                     text: this.percent,
                     //description: this.description
                 }).then((response) => {
-                    console.log("ready");
-
-                    console.log(response.data);
                     this.percent = response.data;
+                    this.updateTitle(this.percent.data)
                 });
 
+            },
+            updateTitle: function(value){
+                if(value > 0){
+                    this.title = "Еще";
+                }
+                if(value > 15){
+                    this.title = "Добавь текст";
+                }
+                if(value > 20){
+                    this.title = "Добавь еще текста";
+                }
+                if(value > 25){
+                    this.title = "Добавь аудио";
+                }
+                if(value > 35){
+                    this.title = "Больше музыки!";
+                }
+                if(value > 45){
+                    this.title = "Переходи в изображения";
+                }
+                if(value > 50){
+                    this.title = "Больше материала - больше разных постов";
+                }
             }
         }
     }

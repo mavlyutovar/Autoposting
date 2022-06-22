@@ -128,34 +128,74 @@ class ThemeController extends Controller
             $theme->name = $request->all()['name'];
             $theme->update();
         }
-        return json_encode($theme);
+        else {
+            $theme->name = "Новый стиль";
+            $theme->update();
+        }
+        return $theme;
     }
 
     public function getPercentReadyTheme(Request $request) {
         $theme      = Theme::where("ready", 0)->first();
-        $percent    = 25;
+        $percent    = 0;
 
         if(isset($theme->url_picture_board)){
-            $percent += 37;
+            $percent += 50;
         }
         if(isset($theme->url_audio_board)) {
-            $allAudio = json_decode($theme->url_audio_board);
-            if(count($allAudio->audioId) > 0) {
-                $percent += 15;
+            $allAudio       = json_decode($theme->url_audio_board);
+            $countAudio     = count($allAudio->audioId);
+            $percentAudio   = 0;
+            while($countAudio > 0 && $percentAudio < 20){
+                $percentAudio    += 4;
+                $percent    += 4;
+                $countAudio--;
             }
         }
         if(isset($theme->text)) {
-            $allText = json_decode($theme->text);
-            if(count($allText->text) > 0) {
-                $percent += 23;
+            $allText        = json_decode($theme->text);
+            $countText      = count($allText->text);
+            $percentText    = 0;
+            while($countText > 0 && $percentText < 30){
+                $percentText    += 6;
+                $percent    += 6;
+                $countText--;
             }
         }
         return ["data" => $percent];
     }
 
+    public function getSettingTheme(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+        return $theme->setting;
+    }
+    public function setSettingTheme(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+
+        if(isset($theme->setting)) {
+            $settingTheme = json_decode($theme->setting);
+            if(isset($request->all()['setting'])) {
+                $setting = $request->all()['setting'];
+                $settingTheme->textProbability = $setting['textProbability'];
+                $settingTheme->audioProbability = $setting['audioProbability'];
+                $settingTheme->pictureProbability = $setting['pictureProbability'];
+            }
+
+            $theme->setting = json_encode($settingTheme);
+            $theme->ready   = 1;
+            $theme->update();
+        }
+        else {
+            $theme->setting = json_encode(["setting" => []]);
+        }
+        return $theme->setting;
+    }
+
     public function getThemeModel(Request $request) {
         $theme = Theme::where("ready", 0)->first();
-        return json_encode($theme);
+        return $theme;
     }
 
     public function getAllTheme(Request $request) {
@@ -169,6 +209,13 @@ class ThemeController extends Controller
             $theme->userid  = $userid;
             $theme->text    = json_encode(["text" => []]);
             $theme->ready   = false;
+            $newSetting     = [
+                "textProbability"       => 50,
+                "audioProbability"      => 50,
+                "pictureProbability"    => 50,
+            ];
+            $theme->setting = json_encode($newSetting);
+            $theme->url_audio_board = json_encode(["audioId" => []]);
             $theme->save();
         }
         $theme = Theme::where("ready", 1)->first();
