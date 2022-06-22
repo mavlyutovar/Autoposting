@@ -1,13 +1,13 @@
 <template>
             <div class="row">
-                <div class="d-flex">
+                <div class="bg-light">
                     <div class="card mb-4">
                         <div class="card-header">Источник изображений</div>
                         <div class="card-body">
-                            <span class="mb-3">
-                                Добавьте источник изображений. Можно указать доски сайта <a href="https://www.pinterest.ru/kdnamehere/thismood-picture/">https://www.pinterest.ru/</a>.
-                                Либо укажите любой <b>ID</b> открытой группы Вконтакте. Система автоматически будет подгружать случайную картинку из набора доски или группы ВК.
-                            </span>
+                            <h5 class="mb-3 text-center">
+                                Добавьте источник изображений. <br>Поддерживаются доски сайта <a href="https://www.pinterest.ru/kdnamehere/thismood-picture/">https://www.pinterest.ru/</a>.
+                                Или укажите любой ID открытой группы Вконтакте. <br>Система автоматически будет подгружать случайную картинку из набора доски или группы ВК.
+                            </h5>
                             <div v-if="change" class="d-flex justify-content-left align-items-center mb-3">
                                 <button @click="del(userid)" type="button" class="btn btn-outline-danger">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
@@ -39,13 +39,21 @@
             this.update();
         },
         methods: {
+            updatePercent() {
+                this.$emit('updPercent', {
+                        userid: this.userid,
+                        urlPicture: this.urlPicture
+                    })},
             add: function() {
                 axios.post('/add-pic-theme', {
                     url_picture_board: this.urlPicture,
                     //description: this.description
                 }).then((response) => {
                     this.urlPicture = response.data
-                    this.change = true;
+                    if(this.urlPicture){
+                        this.change = true;
+                    }
+                    this.updatePercent();
                 });
             },
             update: function() {
@@ -55,6 +63,7 @@
                     if(this.urlPicture) {
                         this.change = true;
                     }
+                    this.updatePercent();
                 });
             },
             del: function(id) {
@@ -62,9 +71,9 @@
                     id: id,
                     //description: this.description
                 }).then((response) => {
-                    console.log(response)
                     this.urlPicture = null;
                     this.change = false;
+                    this.updatePercent();
                 });
             }
         }

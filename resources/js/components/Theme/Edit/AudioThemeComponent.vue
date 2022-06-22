@@ -23,7 +23,7 @@
                 <div class="card mb-4">
                     <div class="card-header">Формат: <b>audio-2001177523_68177523</b></div>
                     <div class="card-body">
-                        <span>Поддерживается только музыка из Вконтакте. Можно записывать через запятую.</span>
+                        <h6 class="mb-3">Поддерживается только музыка из Вконтакте. Можно записывать через запятую.</h6>
                         <textarea v-model="audioAdd" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         <div class="d-flex justify-content-around align-items-center mt-3">
                             <button @click="add()" data-toggle="tooltip" data-placement="left" title="Добавьте несколько сообщений одной тематики" type="submit" class="justify-content-end btn btn-success">Добавить</button>
@@ -49,6 +49,11 @@ export default {
         this.update();
     },
     methods: {
+        updatePercent() {
+            this.$emit('updPercent', {
+                userid: this.userid,
+                urlPicture: this.urlPicture
+            })},
         add: function() {
             axios.post('/add-audio-theme', {
                 url_audio_board: this.audioAdd,
@@ -56,12 +61,13 @@ export default {
             }).then((response) => {
                 console.log(response.data)
                 this.theme = response.data
+                this.updatePercent();
             });
         },
         update: function() {
             axios.get('/show-audio-theme').then((response) => {
-                console.log(response.data)
                 this.theme = response.data;
+                this.updatePercent();
             });
         },
         del: function(id) {
@@ -71,6 +77,7 @@ export default {
             }).then((response) => {
                 console.log(response)
                 this.theme = response.data
+                this.updatePercent();
             });
         }
     }

@@ -23,7 +23,7 @@
                         <div class="card mb-4">
                             <div class="card-header">Введите предложение</div>
                             <div class="card-body">
-                                <span>Добавьте несколько сообщений одной тематики. Поддержиаются смайлы <a href="https://getemoji.com/">Ctrl+C Ctrl+V</a>.</span>
+                                <h6 class="mb-3">Добавьте несколько сообщений одной тематики. <a href="https://getemoji.com/">Поддержиаются смайлы</a></h6>
                                 <textarea v-model="textAdd" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                                 <div class="d-flex justify-content-around align-items-center mt-3">
                                     <button @click="add()" data-toggle="tooltip" data-placement="left" title="Добавьте несколько сообщений одной тематики" type="submit" class="justify-content-end btn btn-success">Добавить</button>
@@ -49,18 +49,25 @@
             this.update();
         },
         methods: {
+            updatePercent() {
+                this.$emit('updPercent', {
+                    userid: this.userid,
+                    urlPicture: this.urlPicture
+                })},
             add: function() {
                 axios.post('/add-text-theme', {
                     text: this.textAdd,
                     //description: this.description
                 }).then((response) => {
                     this.theme = response.data
+                    this.updatePercent();
                 });
             },
             update: function() {
                 this.is_refresh = true;
                 axios.get('/show-text-theme').then((response) => {
                     this.theme = response.data;
+                    this.updatePercent();
                 });
             },
             del: function(id) {
@@ -69,6 +76,7 @@
                     //description: this.description
                 }).then((response) => {
                     this.theme = response.data
+                    this.updatePercent();
                 });
             }
         }

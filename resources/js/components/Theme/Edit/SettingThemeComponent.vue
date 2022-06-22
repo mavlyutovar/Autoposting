@@ -2,19 +2,70 @@
             <div class="row">
                 <div class="bg-light">
                     <div class="card mb-4">
-                        <div class="card-header">Вариантов текста для поста: {{theme.text.length}} шт.</div>
+                        <div class="card-header">Прежде чем сохранить</div>
                         <div class="card-body">
-                            <ul class="list-group">
-                                <li v-for="(item, index) in theme.text" class="list-group-item d-flex justify-content-between align-items-center">
-                                    <span class="text-dark">{{index+1}}</span>
-                                    <span class="mr-auto p-2">{{ item }}</span>
-                                    <button @click="del(index)" type="button" class="btn btn-warning">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                                            <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"></path>
-                                        </svg>
-                                    </button>
-                                </li>
-                            </ul>
+                            <div class="row d-flex justify-content-center">
+                                <SetThemeName></SetThemeName>
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <div class="col-lg-9 mb-3 text-center">
+                                    <h5>Настройки вероятности помогают сделать контент разнообразнее.<br>Алгоритм решает добавлять или не добавлять определенный контент на моменте постинга.</h5>
+                                    <h5>Рекомендуем хотя-бы одному компоненту выставить значение <b>100%</b></h5>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="d-flex justify-content-center  col-3">
+                                    <round-slider
+                                        v-model="setting.textProbability+'%'"
+                                        start-angle="315"
+                                        end-angle="+270"
+                                        line-cap="round"
+                                        radius="81"
+                                        range-color="#3490dc"
+                                        :tooltip-format="tooltipFormatter"
+                                    ></round-slider>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>Вероятность добавления случайного <b>текста</b> в пост</h5>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="d-flex justify-content-center  col-3">
+                                    <round-slider
+                                        v-model="setting.audioProbability"
+                                        start-angle="315"
+                                        end-angle="+270"
+                                        line-cap="round"
+                                        radius="81"
+                                        range-color="#3490dc"
+                                        :tooltip-format="tooltipFormatter"
+                                    ></round-slider>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>Вероятность добавления случайной <b>аудиозаписи</b> в пост</h5>
+                                </div>
+                            </div>
+                            <div class="row d-flex justify-content-center align-items-center">
+                                <div class="d-flex justify-content-center  col-3">
+                                    <round-slider
+                                        v-model="setting.pictureProbability"
+                                        start-angle="315"
+                                        value="sd"
+                                        end-angle="+270"
+                                        line-cap="round"
+                                        radius="81"
+                                        range-color="#3490dc"
+                                        :tooltip-format="tooltipFormatter"
+                                    ></round-slider>
+                                </div>
+                                <div class="col-lg-6">
+                                    <h5>Вероятность добавления случайного <b>изображения</b> в пост</h5>
+                                </div>
+
+                            </div>
+                            <div class="row d-flex justify-content-center">
+                                <button @click="setSettingTheme()" type="button" class="btn btn-primary col-3">Сохранить в список стилей</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -22,49 +73,56 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueCircleSlider from 'vue-round-slider'
+
+import SetThemeName from './SetNameThemeComponent'
+
+Vue.use(VueCircleSlider)
+
     export default {
         data:function(){
             return{
-                theme: {
-                    text: []
+                setting: {
+                    textProbability: 50,
+                    pictureProbability: 50,
+                    audioProbability: 50,
                 },
-                is_refresh: false,
-                id: 0,
-                textAdd: "",
-                params: [],
             }
+        },
+        components: {
+            VueCircleSlider,
+            SetThemeName
         },
         mounted() {
             this.update();
         },
         methods: {
-            add: function() {
-                axios.post('/add-text-theme', {
-                    text: this.textAdd,
+            tooltipFormatter(e) {
+                if (e.value === 100) {
+                    return "Всега";
+                }
+                return `${e.value}%`;
+            },
+            setSettingTheme: function() {
+                axios.post('/set-setting-theme', {
+                    setting: this.setting,
                     //description: this.description
                 }).then((response) => {
-                    console.log(response.data)
-                    this.theme = response.data
+                    this.theme = response.data;
+                    location.reload();
                 });
             },
             update: function() {
-                this.is_refresh = true;
-                axios.get('/show-text').then((response) => {
-                    this.textCount = 0;
-                    console.log(response.data)
-                    this.theme = response.data;
-                    this.is_refresh = false;
-                    this.id++;
-                });
-            },
-            del: function(id) {
-                axios.post('/update-text-theme', {
-                    id: id,
+                axios.post('/get-setting-theme', {
+                    text: 0,
                     //description: this.description
                 }).then((response) => {
-                    this.theme = response.data
+                    this.setting = response.data;
+                    console.log(this.theme)
                 });
-            }
+
+            },
         }
     }
 </script>
