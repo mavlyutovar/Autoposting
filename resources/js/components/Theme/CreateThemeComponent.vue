@@ -1,22 +1,19 @@
 <template>
     <div>
-
+        <SetThemeName :data="theme"></SetThemeName>
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="d-flex justify-content-start">
-                <h3>{{ theme.name }}</h3>
-            </div>
             <div class="d-flex justify-content-center  col-6">
-                <Progress v-on:remove="update()" ref="updateProgress"></Progress>
+                <Progress ref="updateProgress"></Progress>
             </div>
             <div class="d-flex justify-content-end">
                 <button @click="setTextTheme()" type="button" class="btn btn-secondary m-1">Текст</button>
-                <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Изображения</button>
                 <button @click="setAudioTheme()" type="button" class="btn btn-secondary m-1">Аудио</button>
-                <button @click="setSettingsTheme()" type="button" class="btn btn-info m-1">Запланировать</button>
+                <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Изображения</button>
+                <button @click="setSettingsTheme()" type="button" class="btn btn-info m-1">Сохранить стиль</button>
             </div>
         </div>
 
-        <Component :is="currentComponent" :data="theme"></Component>
+        <Component :is="currentComponent"></Component>
     </div>
 </template>
 
@@ -24,9 +21,7 @@
 
 import Progress from './Edit/ProgressCreateTheme'
 import SetTextTheme from './Edit/TextThemeComponent'
-import SetAudioTheme from './Edit/AudioThemeComponent'
-import SetPictureTheme from './Edit/PictureThemeComponent'
-import SetSettingTheme from './Edit/SettingThemeComponent'
+import SetThemeName from './Edit/SetNameThemeComponent'
 
 Vue.component('set-text-theme', require('./Edit/TextThemeComponent').default);
 Vue.component('set-audio-theme', require('./Edit/AudioThemeComponent').default);
@@ -36,29 +31,18 @@ Vue.component('set-setting-theme', require('./Edit/SettingThemeComponent').defau
 export default {
     data:function(){
         return{
-            theme: {
-                text: []
-            },
             currentComponent: "set-text-theme"
         }
     },
-    mounted() {
-        this.update();
-    },
+    // mounted() {
+    //     this.update();
+    // },
     components: {
         Progress,
+        SetThemeName,
         SetTextTheme
     },
     methods: {
-        update: function() {
-            axios.post('/get-theme', {
-                text: 0,
-                //description: this.description
-            }).then((response) => {
-                this.theme = response.data;
-            });
-
-        },
         setTextTheme: function() {
             this.currentComponent = "set-text-theme";
             this.$refs.updateProgress.update();

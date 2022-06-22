@@ -121,25 +121,33 @@ class ThemeController extends Controller
         return $theme->url_picture_board;
     }
 
+    public function setThemeName(Request $request)
+    {
+        $theme = Theme::where("ready", 0)->first();
+        if(isset($request->all()['name'])) {
+            $theme->name = $request->all()['name'];
+            $theme->update();
+        }
+        return json_encode($theme);
+    }
 
     public function getPercentReadyTheme(Request $request) {
         $theme      = Theme::where("ready", 0)->first();
-        $step    = 25;
         $percent    = 25;
 
         if(isset($theme->url_picture_board)){
-            $percent += $step;
+            $percent += 37;
         }
         if(isset($theme->url_audio_board)) {
             $allAudio = json_decode($theme->url_audio_board);
             if(count($allAudio->audioId) > 0) {
-                $percent += $step;
+                $percent += 15;
             }
         }
         if(isset($theme->text)) {
             $allText = json_decode($theme->text);
             if(count($allText->text) > 0) {
-                $percent += $step;
+                $percent += 23;
             }
         }
         return ["data" => $percent];

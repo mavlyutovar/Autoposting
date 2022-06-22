@@ -32,6 +32,7 @@ Route::post('/add-audio-theme', "ThemeController@addAudio")->name('add-audio-the
 Route::post('/get-theme', "ThemeController@getThemeModel")->name('get-theme');
 Route::post('/get-all-theme', "ThemeController@getAllTheme")->name('get-all-theme');
 Route::post('/delete-theme', "ThemeController@deleteTheme")->name('delete-theme');
+Route::post('/set-name-theme', "ThemeController@setThemeName")->name('set-name-theme');
 
 
 Auth::routes();
