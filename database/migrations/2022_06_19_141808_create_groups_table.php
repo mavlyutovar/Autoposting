@@ -19,6 +19,7 @@ class CreateGroupsTable extends Migration
             $table->integer('group_vkid');
             $table->string('url');
             $table->string('info');
+            $table->integer('userid');
             $table->timestamps();
         });
     }
