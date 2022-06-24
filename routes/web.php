@@ -30,8 +30,10 @@ Route::post('/update-audio-theme', "ThemeController@updateAudio")->name('update-
 Route::post('/add-audio-theme', "ThemeController@addAudio")->name('add-audio-theme');
 
 Route::post('/get-theme', "ThemeController@getThemeModel")->name('get-theme');
-Route::post('/get-all-theme', "ThemeController@getAllTheme")->name('get-all-theme');
 Route::post('/delete-theme', "ThemeController@deleteTheme")->name('delete-theme');
+Route::post('/edit-theme', "ThemeController@setEditTheme")->name('edit-theme');
+
+Route::post('/get-all-theme', "ThemeController@getAllTheme")->name('get-all-theme');
 Route::post('/set-name-theme', "ThemeController@setThemeName")->name('set-name-theme');
 Route::post('/get-setting-theme', "ThemeController@getSettingTheme")->name('get-setting-theme');
 Route::post('/set-setting-theme', "ThemeController@setSettingTheme")->name('set-setting-theme');

@@ -56,6 +56,19 @@ export default {
             }).then((response) => {
                 console.log(id);
                 this.theme = response.data
+                this.update();
+            });
+        },
+        editTheme: function(id) {
+            axios.post('/edit-theme', {
+                id: id,
+                //description: this.description
+            }).then((response) => {
+                this.theme = response.data
+                this.$emit('updButton', {
+                    theme: this.theme,
+                    urlPicture: this.urlPicture
+                })
             });
         }
     }

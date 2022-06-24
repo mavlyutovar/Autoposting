@@ -7,10 +7,14 @@ use Illuminate\Http\Request;
 
 class ThemeController extends Controller
 {
-
+    public function index()
+    {
+        $theme = $this->getUseNowTheme();
+        return view("home", [ 'data' => $theme]);
+    }
     public function addText(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         $allText = json_decode($theme->text);
 
         if(isset($request->all()['text'])) {
@@ -25,13 +29,13 @@ class ThemeController extends Controller
 
     public function showText(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         return $theme->text;
     }
 
     public function updateText(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
 
         if(isset($theme->text)) {
             $allText = json_decode($theme->text);
@@ -54,7 +58,7 @@ class ThemeController extends Controller
 
     public function addAudio(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         $allAudio = json_decode($theme->url_audio_board);
 
         if(isset($request->all()['url_audio_board'])) {
@@ -69,13 +73,13 @@ class ThemeController extends Controller
 
     public function showAudio(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         return $theme->url_audio_board;
     }
 
     public function updateAudio(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
 
         if(isset($theme->url_audio_board)) {
             $allAudio = json_decode($theme->url_audio_board);
@@ -98,7 +102,7 @@ class ThemeController extends Controller
 
     public function addPicture(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         if(isset($request->all()['url_picture_board'])) {
             $theme->url_picture_board = $request->all()['url_picture_board'];
             $theme->update();
@@ -108,13 +112,13 @@ class ThemeController extends Controller
 
     public function showPicture(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         return $theme->url_picture_board;
     }
 
     public function updatePicture(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
 
         $theme->url_picture_board = null;
         $theme->update();
@@ -123,20 +127,22 @@ class ThemeController extends Controller
 
     public function setThemeName(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
-        if(isset($request->all()['name'])) {
-            $theme->name = $request->all()['name'];
-            $theme->update();
-        }
-        else {
-            $theme->name = "Новый стиль";
-            $theme->update();
+        $theme = $this->getUseNowTheme();
+        if(isset($theme)) {
+            if(isset($request->all()['name'])) {
+                $theme->name = $request->all()['name'];
+                $theme->update();
+            }
+            else {
+                $theme->name = "Новый стиль";
+                $theme->update();
+            }
         }
         return $theme;
     }
 
     public function getPercentReadyTheme(Request $request) {
-        $theme      = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         $percent    = 0;
 
         if(isset($theme->url_picture_board)){
@@ -167,12 +173,12 @@ class ThemeController extends Controller
 
     public function getSettingTheme(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
         return $theme->setting;
     }
     public function setSettingTheme(Request $request)
     {
-        $theme = Theme::where("ready", 0)->first();
+        $theme = $this->getUseNowTheme();
 
         if(isset($theme->setting)) {
             $settingTheme = json_decode($theme->setting);
@@ -184,7 +190,7 @@ class ThemeController extends Controller
             }
 
             $theme->setting = json_encode($settingTheme);
-            $theme->ready   = 1;
+            $theme->status   = "peace";
             $theme->update();
         }
         else {
@@ -193,22 +199,28 @@ class ThemeController extends Controller
         return $theme->setting;
     }
 
-    public function getThemeModel(Request $request) {
-        $theme = Theme::where("ready", 0)->first();
+    public function getThemeModel(Request $request)
+    {
+        $theme = $this->getUseNowTheme();
         return $theme;
     }
 
-    public function getAllTheme(Request $request) {
+    public function getAllTheme(Request $request)
+    {
         $userid = 1;
         $today  = getdate();
-
-        $theme = Theme::where("userid", $userid)->get();
+        $theme = Theme::where("status", "edit")->first();
+        if(count($theme) > 0) { //Убираем статус редактирования.
+            $theme->status = "peace";
+            $theme->update();
+        }
+        $theme = Theme::where("status", "create")->first();
         if(count($theme) == 0){ //Заранее создаем пустое объявление
             $theme = new Theme();
             $theme->name    = "Новый стиль";
             $theme->userid  = $userid;
             $theme->text    = json_encode(["text" => []]);
-            $theme->ready   = false;
+            $theme->status  = "create";
             $newSetting     = [
                 "textProbability"       => 50,
                 "audioProbability"      => 50,
@@ -218,42 +230,39 @@ class ThemeController extends Controller
             $theme->url_audio_board = json_encode(["audioId" => []]);
             $theme->save();
         }
-        $theme = Theme::where("ready", 1)->first();
+        $theme = Theme::where("userid", $userid)->where("status", "peace")->get();
         return $theme;
     }
 
-    public function deleteTheme(Request $request) {
+    public function deleteTheme(Request $request)
+    {
         if(isset($request->all()['id'])) {
             $del_id = $request->all()['id'];
             Theme::find($del_id)->delete();
         }
-        $theme = Theme::where("ready", 1)->first();
+        $theme = Theme::where("status", "peace")->get();
         return $theme;
     }
 
-
-
-    public function index()
+    public function setEditTheme(Request $request)
     {
-        $theme = Theme::where("ready", 1)->first();
-        return view("home", [ 'data' => $theme]);
+        if(isset($request->all()['id'])) {
+            $del_id = $request->all()['id'];
+            $theme = Theme::find($del_id)->first();
+            $theme->status = "edit";
+            $theme->update();
+        }
+        $theme = Theme::where("status", "peace")->get();
+        return $theme;
     }
 
-    public function create()
+    public function getUseNowTheme()
     {
-        dd("createok");
+        $user_stat = "peace";
+        $user_stat = "create";
+        $user_stat = "edit";
+        $theme = Theme::where("status", $user_stat)->first();
+        return $theme;
     }
 
-    public function store(Request $request)
-    {
-        $company = Theme::create($request->all());
-        return $company;
-    }
-
-    public function destroy($id)
-    {
-        $company = Theme::findOrFail($id);
-        $company->delete();
-        return '';
-    }
 }
