@@ -18,3 +18,7 @@ yarn-error.log
 /.idea/vcs.xml
 /public/css/app.css
 /public/js/app.js
+/composer.json
+/composer.lock
+/package-lock.json
+/package.json
