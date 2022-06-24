@@ -8,7 +8,7 @@
                 <button @click="setTextTheme()" type="button" class="btn btn-secondary m-1">Текст</button>
                 <button @click="setAudioTheme()" type="button" class="btn btn-secondary m-1">Аудио</button>
                 <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Изображения</button>
-                <button @click="setSettingsTheme()" type="button" :disabled='saveButton' class="btn btn-primary m-1">Сохранить стиль</button>
+                <button @click="setSettingsTheme()" type="button" :disabled='saveButton' class="btn btn-primary m-1">Настройки</button>
             </div>
         </div>
 
@@ -44,22 +44,15 @@ export default {
     methods: {
         setTextTheme: function() {
             this.currentComponent = "set-text-theme";
-            this.getPercent();
         },
         setAudioTheme: function() {
             this.currentComponent = "set-audio-theme";
-            this.getPercent();
         },
         setPictureTheme: function() {
             this.currentComponent = "set-picture-theme";
-            this.getPercent();
         },
         setSettingsTheme: function() {
             this.currentComponent = "set-setting-theme";
-            this.getPercent();
-        },
-        cccOL(data) {
-            console.log(data)
         },
         getPercent: function() {
             this.percent = 0;

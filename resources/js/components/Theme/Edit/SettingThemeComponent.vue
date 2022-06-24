@@ -2,13 +2,14 @@
             <div class="row">
                 <div class="bg-light">
                     <div class="card mb-4">
-                        <div class="card-header">Прежде чем сохранить</div>
+                        <div class="card-header"><SetThemeName></SetThemeName></div>
                         <div class="card-body">
-                            <div class="row d-flex justify-content-center">
-                                <SetThemeName></SetThemeName>
+                            <div class="row d-flex justify-content-center mb-5">
+
                             </div>
                             <div class="row d-flex justify-content-center">
                                 <div class="col-lg-9 mb-3 text-center">
+                                    <h3>Настройки вероятности</h3>
                                     <h5>Настройки вероятности помогают сделать контент разнообразнее.<br>Алгоритм решает добавлять или не добавлять определенный контент на моменте постинга.</h5>
                                     <h5>Рекомендуем хотя-бы одному компоненту выставить значение <b>100%</b></h5>
                                 </div>

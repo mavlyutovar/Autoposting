@@ -67,7 +67,6 @@
                 this.is_refresh = true;
                 axios.get('/show-text-theme').then((response) => {
                     this.theme = response.data;
-                    this.updatePercent();
                 });
             },
             del: function(id) {

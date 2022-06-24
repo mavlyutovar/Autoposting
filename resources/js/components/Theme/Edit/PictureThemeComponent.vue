@@ -63,7 +63,6 @@
                     if(this.urlPicture) {
                         this.change = true;
                     }
-                    this.updatePercent();
                 });
             },
             del: function(id) {

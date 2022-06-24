@@ -67,7 +67,6 @@ export default {
         update: function() {
             axios.get('/show-audio-theme').then((response) => {
                 this.theme = response.data;
-                this.updatePercent();
             });
         },
         del: function(id) {
