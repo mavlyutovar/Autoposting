@@ -14,10 +14,6 @@ class Theme extends Model
     private $group;
     private $newPostLog;
 
-    public function addText() {
-
-    }
-
     public function initGroup(Group $group, $token = null)
     {
         $this->vk           = new VKApi($group->group_vkid, $token);

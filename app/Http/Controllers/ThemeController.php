@@ -4,26 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ThemeController extends Controller
 {
     public function index()
     {
         $theme = $this->getUseNowTheme();
-        return view("home", [ 'data' => $theme]);
+        return view("layouts.theme_list", [ 'data' => $theme]);
     }
     public function addText(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
     {
         $theme = $this->getUseNowTheme();
-        $allText = json_decode($theme->text);
-
         if(isset($request->all()['text'])) {
+            $allText = json_decode($theme->text);
             if(isset($theme->text)) {
                 $allText->text[] = $request->all()['text'];
             }
+            $theme->text = json_encode($allText);
+            $theme->update();
         }
-        $theme->text = json_encode($allText);
-        $theme->update();
         return $theme->text;
     }
 
@@ -36,22 +36,15 @@ class ThemeController extends Controller
     public function updateText(Request $request)
     {
         $theme = $this->getUseNowTheme();
-
-        if(isset($theme->text)) {
+        if(isset($request->all()['id'])) {
             $allText = json_decode($theme->text);
-            if(isset($request->all()['id'])) {
-                $del_id = $request->all()['id'];
+            $del_id = $request->all()['id'];
 
-                unset($allText->text[$del_id]);
-                array_splice($allText->text, $del_id, 0);
-
-            }
+            unset($allText->text[$del_id]);
+            array_splice($allText->text, $del_id, 0);
 
             $theme->text = json_encode($allText);
             $theme->update();
-        }
-        else {
-            $theme->text = json_encode(["text" => []]);
         }
         return $theme->text;
     }
@@ -59,15 +52,14 @@ class ThemeController extends Controller
     public function addAudio(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
     {
         $theme = $this->getUseNowTheme();
-        $allAudio = json_decode($theme->url_audio_board);
-
         if(isset($request->all()['url_audio_board'])) {
+            $allAudio = json_decode($theme->url_audio_board);
             if(isset($theme->url_audio_board)) {
                 $allAudio->audioId[] = $request->all()['url_audio_board'];
             }
+            $theme->url_audio_board = json_encode($allAudio);
+            $theme->update();
         }
-        $theme->url_audio_board = json_encode($allAudio);
-        $theme->update();
         return $theme->url_audio_board;
     }
 
@@ -80,7 +72,6 @@ class ThemeController extends Controller
     public function updateAudio(Request $request)
     {
         $theme = $this->getUseNowTheme();
-
         if(isset($theme->url_audio_board)) {
             $allAudio = json_decode($theme->url_audio_board);
             if(isset($request->all()['id'])) {
@@ -119,7 +110,6 @@ class ThemeController extends Controller
     public function updatePicture(Request $request)
     {
         $theme = $this->getUseNowTheme();
-
         $theme->url_picture_board = null;
         $theme->update();
         return $theme->url_picture_board;
@@ -128,23 +118,21 @@ class ThemeController extends Controller
     public function setThemeName(Request $request)
     {
         $theme = $this->getUseNowTheme();
-        if(isset($theme)) {
-            if(isset($request->all()['name'])) {
-                $theme->name = $request->all()['name'];
-                $theme->update();
-            }
-            else {
-                $theme->name = "Новый стиль";
-                $theme->update();
-            }
+        if(isset($request->all()['name'])) {
+            $theme->name = $request->all()['name'];
+            $theme->update();
+        }
+        else {
+            $theme->name = "Новый стиль";
+            $theme->update();
         }
         return $theme;
     }
 
     public function getPercentReadyTheme(Request $request) {
-        $theme = $this->getUseNowTheme();
         $percent    = 0;
 
+        $theme = $this->getUseNowTheme();
         if(isset($theme->url_picture_board)){
             $percent += 50;
         }
@@ -179,22 +167,17 @@ class ThemeController extends Controller
     public function setSettingTheme(Request $request)
     {
         $theme = $this->getUseNowTheme();
-
-        if(isset($theme->setting)) {
+        if(isset($request->all()['setting'])) {
             $settingTheme = json_decode($theme->setting);
-            if(isset($request->all()['setting'])) {
-                $setting = $request->all()['setting'];
-                $settingTheme->textProbability = $setting['textProbability'];
-                $settingTheme->audioProbability = $setting['audioProbability'];
-                $settingTheme->pictureProbability = $setting['pictureProbability'];
-            }
+            $setting = $request->all()['setting'];
+
+            $settingTheme->textProbability = $setting['textProbability'];
+            $settingTheme->audioProbability = $setting['audioProbability'];
+            $settingTheme->pictureProbability = $setting['pictureProbability'];
 
             $theme->setting = json_encode($settingTheme);
             $theme->status   = "peace";
             $theme->update();
-        }
-        else {
-            $theme->setting = json_encode(["setting" => []]);
         }
         return $theme->setting;
     }
@@ -207,18 +190,25 @@ class ThemeController extends Controller
 
     public function getAllTheme(Request $request)
     {
-        $userid = 1;
         $today  = getdate();
-        $theme = Theme::where("status", "edit")->first();
+        $theme = $this->getIsEditTheme();
         if(count($theme) > 0) { //Убираем статус редактирования.
-            $theme->status = "peace";
+            $buffer_theme               = $this->getEditBufferTheme();
+            $theme->name                = $buffer_theme->name;
+            $theme->description         = $buffer_theme->description;
+            $theme->setting             = $buffer_theme->setting;
+            $theme->url_picture_board   = $buffer_theme->url_picture_board;
+            $theme->url_audio_board     = $buffer_theme->url_audio_board;
+            $theme->text                = $buffer_theme->text;
+            $theme->status              = "peace";
             $theme->update();
+            $buffer_theme->delete();
         }
         $theme = Theme::where("status", "create")->first();
         if(count($theme) == 0){ //Заранее создаем пустое объявление
             $theme = new Theme();
             $theme->name    = "Новый стиль";
-            $theme->userid  = $userid;
+            $theme->userid  = Auth::id();
             $theme->text    = json_encode(["text" => []]);
             $theme->status  = "create";
             $newSetting     = [
@@ -230,38 +220,68 @@ class ThemeController extends Controller
             $theme->url_audio_board = json_encode(["audioId" => []]);
             $theme->save();
         }
-        $theme = Theme::where("userid", $userid)->where("status", "peace")->get();
-        return $theme;
+        return $this->getPeaceTheme();
     }
 
-    public function deleteTheme(Request $request)
+    public function deleteTheme(Request $request, $id)
     {
-        if(isset($request->all()['id'])) {
-            $del_id = $request->all()['id'];
-            Theme::find($del_id)->delete();
+        if($id) {
+            Theme::find($id)->delete();
         }
-        $theme = Theme::where("status", "peace")->get();
-        return $theme;
+        return $this->getPeaceTheme();
     }
 
-    public function setEditTheme(Request $request)
+    public function setEditTheme(Request $request, $id)
     {
-        if(isset($request->all()['id'])) {
-            $del_id = $request->all()['id'];
-            $theme = Theme::find($del_id)->first();
-            $theme->status = "edit";
+        if(isset($id)) {
+            $theme = Theme::find($id);
+            $cloneTheme = $theme->replicate();
+            $cloneTheme->status = "edit_buffer";
+            $cloneTheme->save();
+
+            $theme->status = "isEdit";
             $theme->update();
         }
-        $theme = Theme::where("status", "peace")->get();
-        return $theme;
+        return $this->getPeaceTheme();
+    }
+    public function undoEditTheme(Request $request) {
+        $theme = $this->getIsEditTheme();
+        $theme->status = "peace";
+        $theme->update();
+
+        $theme = $this->getEditBufferTheme();
+        $theme->delete();
+        return $this->getPeaceTheme();
     }
 
     public function getUseNowTheme()
     {
-        $user_stat = "peace";
-        $user_stat = "create";
-        $user_stat = "edit";
-        $theme = Theme::where("status", $user_stat)->first();
+        //Сначала работаем с редактируемой темой
+        $theme = $this->getEditBufferTheme();
+        if(count($theme) > 0){
+            return $theme;
+        }
+        //Потом работаем с новой темой
+        $theme = Theme::where('userid', Auth::id())->
+        where("status", "create")->first();
+        return $theme;
+    }
+
+    public function getEditBufferTheme() {
+        $theme = Theme::where('userid', Auth::id())->
+        where("status", "edit_buffer")->first();
+        return $theme;
+    }
+
+    public function getIsEditTheme() {
+        $theme = Theme::where('userid', Auth::id())->
+        where("status", "isEdit")->first();
+        return $theme;
+    }
+
+    public function getPeaceTheme() {
+        $theme = Theme::where('userid', Auth::id())->
+        where("status", "peace")->get();
         return $theme;
     }
 

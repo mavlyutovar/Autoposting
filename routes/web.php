@@ -13,30 +13,37 @@
 
 use App\Http\Controllers\ThemeController;
 
-Route::get('/', "ThemeController@index")->name('index');
+Route::get('/', "PageController@index")->name('index');
+Route::get('/home', "PageController@index")->name('index');
 
-Route::post('/how-ready', "ThemeController@getPercentReadyTheme")->name('how-ready');
+Route::group(['middleware' => 'auth'], function () {
 
-Route::get('/show-pic-theme', "ThemeController@showPicture")->name('show-pic');
-Route::post('/add-pic-theme', "ThemeController@addPicture")->name('add-pic-theme');
-Route::post('/update-pic-theme', "ThemeController@updatePicture")->name('update-pic-theme');
 
-Route::get('/show-text-theme', "ThemeController@showText")->name('show-text-theme');
-Route::post('/update-text-theme', "ThemeController@updateText")->name('update-text-theme');
-Route::post('/add-text-theme', "ThemeController@addText")->name('add-text-theme');
+    Route::get('/themes', "ThemeController@index")->name('index');
+    Route::post('/how-ready', "ThemeController@getPercentReadyTheme")->name('how-ready')->middleware('auth');;
 
-Route::get('/show-audio-theme', "ThemeController@showAudio")->name('show-audio-theme');
-Route::post('/update-audio-theme', "ThemeController@updateAudio")->name('update-audio-theme');
-Route::post('/add-audio-theme', "ThemeController@addAudio")->name('add-audio-theme');
+    Route::get('/show-pic-theme', "ThemeController@showPicture")->name('show-pic')->middleware('auth');;
+    Route::post('/add-pic-theme', "ThemeController@addPicture")->name('add-pic-theme')->middleware('auth');;
+    Route::post('/update-pic-theme', "ThemeController@updatePicture")->name('update-pic-theme');
 
-Route::post('/get-theme', "ThemeController@getThemeModel")->name('get-theme');
-Route::post('/delete-theme', "ThemeController@deleteTheme")->name('delete-theme');
-Route::post('/edit-theme', "ThemeController@setEditTheme")->name('edit-theme');
+    Route::get('/show-text-theme', "ThemeController@showText")->name('show-text-theme');
+    Route::post('/update-text-theme', "ThemeController@updateText")->name('update-text-theme');
+    Route::post('/add-text-theme', "ThemeController@addText")->name('add-text-theme');
 
-Route::post('/get-all-theme', "ThemeController@getAllTheme")->name('get-all-theme');
-Route::post('/set-name-theme', "ThemeController@setThemeName")->name('set-name-theme');
-Route::post('/get-setting-theme', "ThemeController@getSettingTheme")->name('get-setting-theme');
-Route::post('/set-setting-theme', "ThemeController@setSettingTheme")->name('set-setting-theme');
+    Route::get('/show-audio-theme', "ThemeController@showAudio")->name('show-audio-theme');
+    Route::post('/update-audio-theme', "ThemeController@updateAudio")->name('update-audio-theme');
+    Route::post('/add-audio-theme', "ThemeController@addAudio")->name('add-audio-theme');
+
+    Route::post('/get-theme', "ThemeController@getThemeModel")->name('get-theme');
+    Route::post('/delete-theme/{id}', "ThemeController@deleteTheme")->name('delete-theme');
+    Route::post('/edit-theme/{id}', "ThemeController@setEditTheme")->name('edit-theme');
+    Route::post('/undo-edit-theme', "ThemeController@undoEditTheme")->name('undo-edit-theme');
+
+    Route::post('/get-all-theme', "ThemeController@getAllTheme")->name('get-all-theme');
+    Route::post('/set-name-theme', "ThemeController@setThemeName")->name('set-name-theme');
+    Route::post('/get-setting-theme', "ThemeController@getSettingTheme")->name('get-setting-theme');
+    Route::post('/set-setting-theme', "ThemeController@setSettingTheme")->name('set-setting-theme');
+});
 
 
 
