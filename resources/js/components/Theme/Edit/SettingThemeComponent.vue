@@ -79,8 +79,6 @@ import VueCircleSlider from 'vue-round-slider'
 
 import SetThemeName from './SetNameThemeComponent'
 
-Vue.use(VueCircleSlider)
-
     export default {
         data:function(){
             return{
@@ -92,8 +90,7 @@ Vue.use(VueCircleSlider)
             }
         },
         components: {
-            VueCircleSlider,
-            SetThemeName
+            SetThemeName,
         },
         mounted() {
             this.update();

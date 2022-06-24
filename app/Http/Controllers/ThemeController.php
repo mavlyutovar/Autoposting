@@ -182,6 +182,21 @@ class ThemeController extends Controller
         return $theme->setting;
     }
 
+    public function showThemeModel(Request $request, $id)
+    {
+        if($id) {
+            $theme =  Theme::find($id)->first();
+            $settingTheme = json_decode($theme->setting);
+            $theme->setting = $settingTheme;
+            $allAudio       = json_decode($theme->url_audio_board);
+            $theme->url_audio_board = $allAudio;
+            $allText        = json_decode($theme->text);
+            $theme->text    = $allText;
+            return $theme;
+        }
+        return null;
+    }
+
     public function getThemeModel(Request $request)
     {
         $theme = $this->getUseNowTheme();
@@ -190,8 +205,8 @@ class ThemeController extends Controller
 
     public function getAllTheme(Request $request)
     {
-        $today  = getdate();
-        $theme = $this->getIsEditTheme();
+        $userid = Auth::id();
+        $theme  = $this->getIsEditTheme();
         if(count($theme) > 0) { //Убираем статус редактирования.
             $buffer_theme               = $this->getEditBufferTheme();
             $theme->name                = $buffer_theme->name;
@@ -204,11 +219,11 @@ class ThemeController extends Controller
             $theme->update();
             $buffer_theme->delete();
         }
-        $theme = Theme::where("status", "create")->first();
+        $theme = Theme::where("userid",$userid)->where("status", "create")->first();
         if(count($theme) == 0){ //Заранее создаем пустое объявление
             $theme = new Theme();
             $theme->name    = "Новый стиль";
-            $theme->userid  = Auth::id();
+            $theme->userid  = $userid;
             $theme->text    = json_encode(["text" => []]);
             $theme->status  = "create";
             $newSetting     = [
@@ -227,6 +242,17 @@ class ThemeController extends Controller
     {
         if($id) {
             Theme::find($id)->delete();
+        }
+        return $this->getPeaceTheme();
+    }
+
+    public function duplicateThemeModel(Request $request, $id)
+    {
+        if(isset($id)) {
+            $theme = Theme::find($id);
+            $cloneTheme = $theme->replicate();
+            $cloneTheme->name = "(Копия) ".$theme->name;
+            $cloneTheme->save();
         }
         return $this->getPeaceTheme();
     }
