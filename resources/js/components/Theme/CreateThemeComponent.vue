@@ -18,7 +18,7 @@
 
 <script>
 
-import Progress from './Edit/ProgressCreateTheme'
+import Progress from './Edit/ProgressTheme'
 import SetTextTheme from './Edit/TextThemeComponent'
 
 Vue.component('set-text-theme', require('./Edit/TextThemeComponent').default);

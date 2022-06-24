@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="isChangeName" class="d-flex justify-content-center align-items-center">
-            <div class="d-flex">
+            <div class="d-flex" style="white-space: nowrap;">
                 <h2>{{ theme.name }}</h2>
                 <a href="#" @click="setNameTheme(false)" >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square ml-1" viewBox="0 0 16 16">
