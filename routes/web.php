@@ -19,6 +19,12 @@ Route::get('/home', "PageController@index")->name('index');
 Route::group(['middleware' => 'auth'], function () {
 
 
+    Route::get('/groups', "GroupController@index")->name('index');
+    Route::post('/add-group', "GroupController@addNewGroup")->name('add-group');
+    Route::post('/show-all-group', "GroupController@showAllGroup")->name('show-all-group');
+    Route::post('/delete-group/{id}', "GroupController@deleteGroup")->name('delete-group');
+
+    /*              РОУТЫ ТЕМ */
     Route::get('/themes', "ThemeController@index")->name('index');
 
     Route::post('/duplicate-theme/{id}', "ThemeController@duplicateThemeModel")->name('duplicate-theme');

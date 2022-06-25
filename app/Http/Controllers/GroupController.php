@@ -6,6 +6,7 @@ use App\Api\PinterestApi;
 use App\Group;
 use App\Theme;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -16,53 +17,54 @@ class GroupController extends Controller
 
     public function index()
     {
-        $themes = Theme::all();
-        $themes = Theme::orderBy('name')->paginate(1);
-        return view("home", [ 'data' => Theme::all()]);
-//        $theme = Theme::find(1)->first();example-component
-//        $grp = Group::find(1)->first();
-//        $theme->initGroup($grp);
-//
-//        dd($theme->sendPost());
+        return view("layouts.group_list", [ 'data' => $this->getGroups()]);
 
     }
 
-    public function store(Request $request)
+    public function addNewGroup(Request $request)
     {
-        $themes = Theme::all();
-        return ['data' => $themes];
-//        $this->validate($request, [
-//            'name' => 'required',
-//            'description' => 'required'
-//        ]);
-//        $task = Theme::create([
-//            'name' => $request->name,
-//            'description' => $request->description,
-//            'user_id' => Auth::id()
-//        ]);
-//        return response()->json([
-//            'task' => $task,
-//            'message' => 'ok'
-//        ], 200);
-    }
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Theme $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Theme $task)
-    {
-//
-    }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Theme $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Theme $task)
-    {
+        $group = new Group();
+        $group->userid = Auth::id();
 
-}
+        if(isset($request->all()['groupId'])) {
+            if(is_numeric($request->all()['groupId'])) {
+                $group->group_vkid = $request->all()['groupId'];
+            }
+        }
+        else {
+            return ['data' => $this->getGroups()];
+        }
+        if(isset($request->all()['groupInfo'])) {
+            $group->info = $request->all()['groupId'];
+        }
+        if(isset($request->all()['groupName'])) {
+            $group->name = $request->all()['groupName'];
+        }
+        else {
+            $group->name = "Новая группа";
+        }
+        $group->url = "https://thismood.info/";
+        $group->save();
+        return $this->getGroups();
+    }
+
+    public function showAllGroup()
+    {
+        return $this->getGroups();
+    }
+
+    public function deleteGroup(Request $request, $id)
+    {
+        if($id) {
+            Group::find($id)->delete();
+        }
+        return $this->getGroups();
+    }
+
+    public function getGroups()
+    {
+        $group = Group::where('userid', Auth::id())->get();
+        return $group;
+
+    }
 }
