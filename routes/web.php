@@ -18,7 +18,12 @@ Route::get('/home', "PageController@index")->name('index');
 
 Route::group(['middleware' => 'auth'], function () {
 
+    Route::get('/posts', "PostTimeController@index")->name('index');
+    Route::post('/add-post', "PostTimeController@addNewPostTime")->name('add-post');
+    Route::post('/show-all-post', "PostTimeController@showAllPostTime")->name('show-all-post');
+    Route::post('/delete-post/{id}', "PostTimeController@deletePostTime")->name('delete-post');
 
+    /*              РОУТЫ ГРУПП */
     Route::get('/groups', "GroupController@index")->name('index');
     Route::post('/add-group', "GroupController@addNewGroup")->name('add-group');
     Route::post('/show-all-group', "GroupController@showAllGroup")->name('show-all-group');

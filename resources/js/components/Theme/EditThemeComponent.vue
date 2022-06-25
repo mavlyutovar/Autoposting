@@ -85,7 +85,7 @@ export default {
                 })
             });
         },
-        showTheme(id) {
+        showTheme: function(id) {
             this.$refs.updateShow.update(id);
         },
         duplicateTheme: function(id) {

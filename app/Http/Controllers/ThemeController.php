@@ -182,9 +182,9 @@ class ThemeController extends Controller
         return $theme->setting;
     }
 
-    public function showThemeModel(Request $request, $id)
+    public function showThemeModel(Request $request, $id = null)
     {
-        if($id) {
+        if(isset($id)) {
             $theme =  Theme::find($id)->first();
             $settingTheme = json_decode($theme->setting);
             $theme->setting = $settingTheme;

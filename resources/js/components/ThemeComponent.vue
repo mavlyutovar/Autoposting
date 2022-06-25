@@ -35,10 +35,12 @@
                             Сохранить стиль
                         </button>
                     </div>
-                    <Component @updButton='editTheme' :is="currentComponent"></Component>
+                    <Transition name="fade" mode="out-in">
+                        <Component @updButton='editTheme' :is="currentComponent"></Component>
+                    </Transition>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-dark" href="/" role="button">Назад</a>
+                    <a class="btn btn-secondary" href="/" role="button">Назад</a>
                 </div>
             </div>
         </div>

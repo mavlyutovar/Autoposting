@@ -11,11 +11,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <div class="card mb-4" v-if="theme.url_audio_board.audioId">
-                                <div class="card-header">Количество треков: {{theme.url_audio_board.audioId.length}} шт.</div>
+                            <div class="card mb-4" v-if="theme.url_audio_board">
+                                <div class="card-header">Количество треков: {{theme.url_audio_board.length}} шт.</div>
                                 <div class="card-body">
                                     <ul class="list-group">
-                                        <li v-for="(item, index) in theme.url_audio_board.audioId" class="list-group-item d-flex justify-content-between align-items-center">
+                                        <li v-for="(item, index) in theme.url_audio_board" class="list-group-item d-flex justify-content-between align-items-center">
                                             <span class="text-dark">{{index+1}}</span>
                                             <span class="mr-auto p-2">{{ item }}</span>
                                         </li>
@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import VueCircleSlider from 'vue-round-slider'
 
 export default {
     data:function(){
@@ -70,8 +68,8 @@ export default {
     methods: {
         update: function(id) {
             axios.post('/show-theme/'+id).then((response) => {
+                console.log(response);
                 this.theme = response.data;
-                console.log(this.theme.url_audio_board.audioId);
                 this.isShowModal = true;
             });
 
