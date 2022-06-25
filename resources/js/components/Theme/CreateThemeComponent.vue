@@ -5,7 +5,7 @@
                 <Progress ref="updateProgress"></Progress>
             </div>
             <div class="d-flex justify-content-end">
-                <button @click="setTextTheme()" type="button" class="btn btn-secondary m-1">Текст</button>
+                <button @click="setTextTheme()" type="button" class="btn btn-secondary m-1 active">Текст</button>
                 <button @click="setAudioTheme()" type="button" class="btn btn-secondary m-1">Аудио</button>
                 <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Изображения</button>
                 <button @click="setSettingsTheme()" type="button" :disabled='saveButton' class="btn btn-primary m-1">Настройки</button>

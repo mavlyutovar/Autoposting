@@ -1,73 +1,69 @@
 <template>
             <div class="row">
-                <div class="bg-light">
-                    <div class="card mb-4">
-                        <div class="card-header"><SetThemeName></SetThemeName></div>
-                        <div class="card-body">
-                            <div class="row d-flex justify-content-center mb-5">
+                <div class="">
+                    <div class="row d-flex justify-content-center mb-3 mt-3">
 
-                            </div>
-                            <div class="row d-flex justify-content-center">
-                                <div class="col-lg-9 mb-3 text-center">
-                                    <h3>Настройки вероятности</h3>
-                                    <h5>Настройки вероятности помогают сделать контент разнообразнее.<br>Алгоритм решает добавлять или не добавлять определенный контент на моменте постинга.</h5>
-                                    <h5>Рекомендуем хотя-бы одному компоненту выставить значение <b>100%</b></h5>
-                                </div>
-                            </div>
-                            <div class="row d-flex justify-content-center align-items-center">
-                                <div class="d-flex justify-content-center  col-3">
-                                    <round-slider
-                                        v-model="setting.textProbability+'%'"
-                                        start-angle="315"
-                                        end-angle="+270"
-                                        line-cap="round"
-                                        radius="81"
-                                        range-color="#3490dc"
-                                        :tooltip-format="tooltipFormatter"
-                                    ></round-slider>
-                                </div>
-                                <div class="col-lg-6">
-                                    <h5>Вероятность добавления случайного <b>текста</b> в пост</h5>
-                                </div>
-                            </div>
-                            <div class="row d-flex justify-content-center align-items-center">
-                                <div class="d-flex justify-content-center  col-3">
-                                    <round-slider
-                                        v-model="setting.audioProbability"
-                                        start-angle="315"
-                                        end-angle="+270"
-                                        line-cap="round"
-                                        radius="81"
-                                        range-color="#3490dc"
-                                        :tooltip-format="tooltipFormatter"
-                                    ></round-slider>
-                                </div>
-                                <div class="col-lg-6">
-                                    <h5>Вероятность добавления случайной <b>аудиозаписи</b> в пост</h5>
-                                </div>
-                            </div>
-                            <div class="row d-flex justify-content-center align-items-center">
-                                <div class="d-flex justify-content-center  col-3">
-                                    <round-slider
-                                        v-model="setting.pictureProbability"
-                                        start-angle="315"
-                                        value="sd"
-                                        end-angle="+270"
-                                        line-cap="round"
-                                        radius="81"
-                                        range-color="#3490dc"
-                                        :tooltip-format="tooltipFormatter"
-                                    ></round-slider>
-                                </div>
-                                <div class="col-lg-6">
-                                    <h5>Вероятность добавления случайного <b>изображения</b> в пост</h5>
-                                </div>
-
-                            </div>
-                            <div class="row d-flex justify-content-center">
-                                <button @click="setSettingTheme()" type="button" class="btn btn-primary col-3">Сохранить в список стилей</button>
-                            </div>
+                        <SetThemeName></SetThemeName>
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-9 mb-3 text-center">
+                            <h3>Настройки вероятности</h3>
+                            <h5>Настройки вероятности помогают сделать контент разнообразнее.<br>Алгоритм решает добавлять или не добавлять определенный контент на моменте постинга.</h5>
+                            <h5>Рекомендуем хотя-бы одному компоненту выставить значение <b>100%</b></h5>
                         </div>
+                    </div>
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="d-flex justify-content-center  col-3">
+                            <round-slider
+                                v-model="setting.textProbability+'%'"
+                                start-angle="315"
+                                end-angle="+270"
+                                line-cap="round"
+                                radius="81"
+                                range-color="#3490dc"
+                                :tooltip-format="tooltipFormatter"
+                            ></round-slider>
+                        </div>
+                        <div class="col-lg-6">
+                            <h5>Вероятность добавления случайного <b>текста</b> в пост</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="d-flex justify-content-center  col-3">
+                            <round-slider
+                                v-model="setting.audioProbability"
+                                start-angle="315"
+                                end-angle="+270"
+                                line-cap="round"
+                                radius="81"
+                                range-color="#3490dc"
+                                :tooltip-format="tooltipFormatter"
+                            ></round-slider>
+                        </div>
+                        <div class="col-lg-6">
+                            <h5>Вероятность добавления случайной <b>аудиозаписи</b> в пост</h5>
+                        </div>
+                    </div>
+                    <div class="row d-flex justify-content-center align-items-center">
+                        <div class="d-flex justify-content-center  col-3">
+                            <round-slider
+                                v-model="setting.pictureProbability"
+                                start-angle="315"
+                                value="sd"
+                                end-angle="+270"
+                                line-cap="round"
+                                radius="81"
+                                range-color="#3490dc"
+                                :tooltip-format="tooltipFormatter"
+                            ></round-slider>
+                        </div>
+                        <div class="col-lg-6">
+                            <h5>Вероятность добавления случайного <b>изображения</b> в пост</h5>
+                        </div>
+
+                    </div>
+                    <div class="row d-flex justify-content-center">
+                        <button @click="setSettingTheme()" type="button" class="btn btn-primary col-3">Сохранить в список стилей</button>
                     </div>
                 </div>
             </div>
