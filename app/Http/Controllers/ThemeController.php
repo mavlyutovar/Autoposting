@@ -185,7 +185,7 @@ class ThemeController extends Controller
     public function showThemeModel(Request $request, $id = null)
     {
         if(isset($id)) {
-            $theme =  Theme::find($id)->first();
+            $theme =  Theme::find($id);
             $settingTheme = json_decode($theme->setting);
             $theme->setting = $settingTheme;
             $allAudio       = json_decode($theme->url_audio_board);

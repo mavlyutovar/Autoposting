@@ -7,10 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class PinterestApi extends Model
 {
-
-    public function __construct() {
-    }
-
     public function getImagesFromBoard($link)
     {
         $html       = file_get_contents($link);
@@ -25,7 +21,7 @@ class PinterestApi extends Model
         foreach ($Hrefs as $a) {
             $href = $a->getAttribute("href");
             if(strpos($href, "/pin/") !== false){
-                $srcPins[] = "https://www.pinterest.se".$href;
+                $srcPins[] = "https://www.pinterest.ru".$href;
             }
         }
         return $srcPins;

@@ -24,6 +24,7 @@ class VKApi extends Model
         else {
             $this->token = $token;
         }
+        $this->token = 'a3e9d2d3eea7a80e1fbfacbd20ce3a9b516a3d44688533bd708733fd9eff3e8fe13e0f09638987f094639';
 
         $this->api = new Client($this->version);
         $this->api->setDefaultToken($this->token);
@@ -45,6 +46,26 @@ class VKApi extends Model
             }
         }
         return $this->api->request('wall.post', $params, $this->token);
+    }
+
+    public function uploadFile($url, $path)
+    {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, true);
+
+        if (class_exists('\CURLFile')) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, ['file1' => new \CURLFile($path)]);
+        } else {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, ['file1' => "@$path"]);
+        }
+
+        $data = curl_exec($ch);
+        $info = curl_getinfo($ch);
+        curl_close($ch);
+        return $data;
     }
 
     public function wallAddPhoto($srcImage) {
@@ -157,25 +178,5 @@ class VKApi extends Model
             $this->attachments[] = $a;
             return $a;
         }
-    }
-
-    public function uploadFile($url, $path)
-    {
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_HEADER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_POST, true);
-
-        if (class_exists('\CURLFile')) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, ['file1' => new \CURLFile($path)]);
-        } else {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, ['file1' => "@$path"]);
-        }
-
-        $data = curl_exec($ch);
-        $info = curl_getinfo($ch);
-        curl_close($ch);
-        return $data;
     }
 }

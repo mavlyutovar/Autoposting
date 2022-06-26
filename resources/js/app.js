@@ -22,6 +22,7 @@ window.Vue = require('vue');
 Vue.component('theme-component', require('./components/ThemeComponent.vue').default);
 Vue.component('group-component', require('./components/GroupComponent.vue').default);
 Vue.component('page-component', require('./components/PageComponent.vue').default);
+Vue.component('post-time-component', require('./components/PostTimeComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

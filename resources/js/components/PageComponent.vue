@@ -32,7 +32,7 @@
                         <p class="card-text">Выбираем для групы созданный стиль, выставляем время и переодичность. Сохраняем и наслаждаемся!</p>
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-dark" href="/" role="button">Перейти в раздел планировки</a>
+                        <a class="btn btn-dark" href="/posts" role="button">Перейти в раздел постов</a>
                     </div>
                 </div>
             </div>
