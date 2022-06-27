@@ -2,6 +2,12 @@
             <div class="row">
                 <div class="col-7 col-lg-7">
                     <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="ml-2 form-check form-switch">
+                                <input class="form-check-input cursor-pointer" type="checkbox" id="text" @click="randomText()" v-model="theme.rndText">
+                                <label class="form-check-label"> Случайный смайлик из базы данных </label>
+                            </div>
+                        </li>
                         <li v-for="(item, index) in theme.text" class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-dark">{{index+1}}</span>
                             <span class="mr-auto p-2">{{ item }}</span>
@@ -35,7 +41,8 @@
         data:function(){
             return{
                 theme: {
-                    text: []
+                    text: [],
+                    rndText: true
                 },
                 textAdd: "",
             }
@@ -44,6 +51,9 @@
             this.update();
         },
         methods: {
+            randomText: function() {
+                this.rndText = !this.rndText;
+            },
             updatePercent() {
                 this.$emit('updPercent', {
                     userid: this.userid,
@@ -52,6 +62,7 @@
             add: function() {
                 axios.post('/add-text-theme', {
                     text: this.textAdd,
+                    rndText: this.rndText,
                     //description: this.description
                 }).then((response) => {
                     this.theme = response.data
@@ -62,6 +73,8 @@
                 this.is_refresh = true;
                 axios.get('/show-text-theme').then((response) => {
                     this.theme = response.data;
+                    console.log(this.theme)
+                    //this.theme.
                 });
             },
             del: function(id) {
