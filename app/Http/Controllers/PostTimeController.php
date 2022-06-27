@@ -86,8 +86,8 @@ class PostTimeController extends Controller
     {
         $postTime = PostTime::where('userid', Auth::id())->get();
         foreach ($postTime as $post){
-            $post->themeName = null;
-            $post->groupName = null;
+            $post->themeName = "-";
+            $post->groupName = "-";
             $post->weak = json_decode($post->weak);
             $theme = $post->getTheme();
             if(isset($theme)){

@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class PostTime extends Model
 {
     public function sendPost() {
-        $theme = Theme::find($this->theme_id);
-        $group = Group::find($this->group_id);
-        $theme->initGroup($group);
-        return $theme->sendPost();
+        $theme = $this->getTheme();
+        $group = $this->getGroup();
+        if(isset($group) && isset($theme)){
+            $theme->initGroup($group);
+            return $theme->sendPost();
+        }
+        else {
+            return "Группа или стиль не найдены";
+        }
     }
 
     public function getTheme() {

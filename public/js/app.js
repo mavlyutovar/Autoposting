@@ -40508,6 +40508,7 @@ var render = function () {
                       _c("b", { staticClass: "text-dark" }, [
                         _vm._v(_vm._s(post.time) + ":00"),
                       ]),
+                      _c("br"),
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "mr-auto p-2" }, [

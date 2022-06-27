@@ -93,7 +93,7 @@
                                 <div class="p-2 truncate col-7">
                                     Группа <b class="text-primary">{{ post.groupName }}</b><br>
                                     Стиль для группы <b class="text-dark">{{ post.themeName }}</b><br>
-                                    Время для поста <b class="text-dark">{{ post.time }}:00</b>
+                                    Время для поста <b class="text-dark">{{ post.time }}:00</b><br>
                                 </div>
                                 <div class="mr-auto p-2">
 

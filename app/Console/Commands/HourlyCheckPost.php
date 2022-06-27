@@ -46,7 +46,7 @@ class HourlyCheckPost extends Command
         $postTimes = PostTime::where("time", $nowTime)->get();
         foreach ($postTimes as $generatePost) {
             $weak = (array) json_decode($generatePost->weak);
-            if($weak[strtolower(date("D"))] == true){
+            if($weak[strtolower(date("D"))] === true){
                 $infopost = $generatePost->sendPost();
                 Log::info("(".$generatePost->id.") PostTime: ".$generatePost->time);
             }

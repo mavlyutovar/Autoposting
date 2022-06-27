@@ -21,60 +21,86 @@ class Theme extends Model
         $this->pinterest    = new PinterestApi();
         $this->newPostLog   = new PostLog();
         $this->group        = $group;
+
     }
 
     public function sendPost(){
-        $url_pic_board      = $this->url_picture_board;
-        $pictureLoad        = true;
+        $settings   = json_decode($this->setting);
 
-        $url_audio_board    = $this->url_audio_board;
-        $audio              = $this->vk->wallAddThismoodAudio();
-        $audioLoad          = true;
+        $audioLoad  = true;
+        $audio      = $this->vk->wallAddThismoodAudio();
+        if($this->probabilityMedia($settings->audioProbability)) {
+            $url_audio_board    = json_decode($this->url_audio_board);
+            if(isset($url_audio_board->audioID)) {
 
-        $texts      = $this->getTextFromTheme();
-        $texts      = $this->equalWithLogs($texts);
+                $audios  = (array)$url_audio_board->audioID;
+                shuffle($audios);
+                $audio  = $audios[0];
+            }
+            if(!$url_audio_board->rndAudio) {
+                $audio  = $this->vk->wallAddThismoodAudio();
+            }
+        }
+
         $textLoad   = null;
         $text       = "";
-        if(isset($texts[0])) {
-            $text = $texts[0];
-            $textLoad = true;
-        }
-        if(isset($url_pic_board))
-        {
-            $pictureLoad    = false;
-            if(strpos($url_pic_board, "pinterest.") !== false){
-                $pins = $this->pinterest->getImagesFromBoard($url_pic_board);
-                $pins = $this->equalWithLogs($pins);
-                if(isset($pins[1])) {
-                    $this->newPostLog->pic_value = $pins[1];
-                    $url = $this->pinterest->getUrlFromPinImage($pins[1]);
-                    $this->vk->wallAddPhoto($url);
-                    $pictureLoad = true;
+        if($this->probabilityMedia($settings->textProbability)) {
+            $texts  = json_decode($this->text);
+            if(isset($texts->text)) {
+                if(!$texts->rndText) {
+                    $text     = "🖤";
+                    $textLoad = true;
                 }
-            }
-            else {
-                $photos = $this->vk->getPhotosFromPub($url_pic_board);
-                $photos = $this->equalWithLogs($photos);
-                if(isset($photos[1])) {
-                    $this->newPostLog->pic_value = $photos[2];
-                    $this->vk->wallAddPhotoFromPub($photos[2]);
-                    $pictureLoad = true;
+                $texts      = $this->equalWithLogs($texts->text);
+                if(isset($texts[0])) {
+                    $text       = $texts[0];
+                    $textLoad = true;
                 }
             }
         }
-        if(isset($pictureLoad) || isset($audioLoad) || isset($textLoad)) {
-            $publishTime        = time()+(rand(1, 1200)+rand(1, 600));
 
-            $this->newPostLog->text_value = $text;
-            $this->newPostLog->group_id = $this->group->id;
-            $this->newPostLog->theme_id = $this->id;
-            $this->newPostLog->audio_value = $audio;
+
+        $url_pic_board  = $this->url_picture_board;
+        $pictureLoad    = false;
+        if($this->probabilityMedia($settings->pictureProbability)) {
+            if(isset($url_pic_board))
+            {
+                if(strpos($url_pic_board, "pinterest.") !== false){
+                    $pins = $this->pinterest->getImagesFromBoard($url_pic_board);
+                    $pins = $this->equalWithLogs($pins);
+                    if(isset($pins[1])) {
+                        $this->newPostLog->pic_value = $pins[1];
+                        $url = $this->pinterest->getUrlFromPinImage($pins[1]);
+                        $this->vk->wallAddPhoto($url);
+                        $pictureLoad = true;
+                    }
+                }
+                else {
+                    $photos = $this->vk->getPhotosFromPub($url_pic_board);
+                    $photos = $this->equalWithLogs($photos);
+                    if(isset($photos[1])) {
+                        $this->newPostLog->pic_value = $photos[2];
+                        $this->vk->wallAddPhotoFromPub($photos[2]);
+                        $pictureLoad = true;
+                    }
+                }
+            }
+        }
+
+        if(isset($pictureLoad) || isset($audioLoad) || isset($textLoad)) {
+            $publishTime    = time()+(rand(1, 1200)+rand(1, 600));
+
+            $this->newPostLog->text_value   = $text;
+            $this->newPostLog->group_id     = $this->group->id;
+            $this->newPostLog->theme_id     = $this->id;
+            $this->newPostLog->audio_value  = $audio;
             $params = [
                 'from_group'    => 1,
                 'message'       => $text,
                 'publish_date'  => $publishTime,
             ];
             $response = $this->vk->wallSendPost($params);
+            $this->newPostLog->response = json_encode($response);
             $this->newPostLog->save();
             return $response;
         }
@@ -97,9 +123,11 @@ class Theme extends Model
         return $items;
     }
 
-    public function getTextFromTheme() {
-        $themeTexts = json_decode($this->text);
-        $themeTexts = $themeTexts->text;
-        return $themeTexts;
+    public function probabilityMedia($percent = 0) {
+        $random = rand(1, 100);
+        if($random <= $percent){
+            return true;
+        }
+        return false;
     }
 }
