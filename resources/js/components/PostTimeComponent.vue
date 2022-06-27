@@ -35,7 +35,7 @@
                             <li v-for="(group, index) in groups" class="list-group-item d-flex justify-content-start align-items-center">
                                 <div class="ml-2 form-check form-switch">
                                     <input class="form-check-input cursor-pointer" type="checkbox" :id='group.id' @click="addGroup(index)">
-                                    <label class="form-check-label" :for='group.id'>{{ group.name }} {{ group.id }}</label>
+                                    <label class="form-check-label" :for='group.id'>{{ group.name }} </label>
                                 </div>
                             </li>
                         </ul>
@@ -63,13 +63,13 @@
                     <div class="row d-flex justify-content-center align-items-center mb-3">
                         <div class="d-flex justify-content-center  col-4">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button @click="setWeak(0)" type="button" v-bind:class="{'btn btn-secondary': !weak.monday,  'btn btn-success': weak.monday}">ПН</button>
-                                <button @click="setWeak(1)" type="button" v-bind:class="{'btn btn-secondary': !weak.tuesday,  'btn btn-success': weak.tuesday}">ВТ</button>
-                                <button @click="setWeak(2)" type="button" v-bind:class="{'btn btn-secondary': !weak.wednesday,  'btn btn-success': weak.wednesday}">СР</button>
-                                <button @click="setWeak(3)" type="button" v-bind:class="{'btn btn-secondary': !weak.thursday,  'btn btn-success': weak.thursday}">ЧТ</button>
-                                <button @click="setWeak(4)" type="button" v-bind:class="{'btn btn-secondary': !weak.friday,  'btn btn-success': weak.friday}">ПТ</button>
-                                <button @click="setWeak(5)" type="button" v-bind:class="{'btn btn-secondary': !weak.saturday,  'btn btn-success': weak.saturday}">СБ</button>
-                                <button @click="setWeak(6)" type="button" v-bind:class="{'btn btn-secondary': !weak.sunday,  'btn btn-success': weak.sunday}">ВС</button>
+                                <button @click="setWeak(0)" type="button" v-bind:class="{'btn btn-secondary': !weak.Mon,  'btn btn-success': weak.Mon}">ПН</button>
+                                <button @click="setWeak(1)" type="button" v-bind:class="{'btn btn-secondary': !weak.Tue,  'btn btn-success': weak.Tue}">ВТ</button>
+                                <button @click="setWeak(2)" type="button" v-bind:class="{'btn btn-secondary': !weak.Wed,  'btn btn-success': weak.Wed}">СР</button>
+                                <button @click="setWeak(3)" type="button" v-bind:class="{'btn btn-secondary': !weak.Thu,  'btn btn-success': weak.Thu}">ЧТ</button>
+                                <button @click="setWeak(4)" type="button" v-bind:class="{'btn btn-secondary': !weak.Fri,  'btn btn-success': weak.Fri}">ПТ</button>
+                                <button @click="setWeak(5)" type="button" v-bind:class="{'btn btn-secondary': !weak.Sat,  'btn btn-success': weak.Sat}">СБ</button>
+                                <button @click="setWeak(6)" type="button" v-bind:class="{'btn btn-secondary': !weak.Sun,  'btn btn-success': weak.Sun}">ВС</button>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -98,13 +98,13 @@
                                 <div class="mr-auto p-2">
 
                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button @click="setWeak(0)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.monday,  'btn btn-success': post.weak.monday}" disabled>ПН</button>
-                                        <button @click="setWeak(1)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.tuesday,  'btn btn-success': post.weak.tuesday}" disabled>ВТ</button>
-                                        <button @click="setWeak(2)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.wednesday,  'btn btn-success': post.weak.wednesday}" disabled>СР</button>
-                                        <button @click="setWeak(3)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.thursday,  'btn btn-success': post.weak.thursday}" disabled>ЧТ</button>
-                                        <button @click="setWeak(4)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.friday,  'btn btn-success': post.weak.friday}" disabled>ПТ</button>
-                                        <button @click="setWeak(5)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.saturday,  'btn btn-success': post.weak.saturday}" disabled>СБ</button>
-                                        <button @click="setWeak(6)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.sunday,  'btn btn-success': post.weak.sunday}" disabled>ВС</button>
+                                        <button @click="setWeak(0)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.Mon,  'btn btn-success': post.weak.Mon}" disabled>ПН</button>
+                                        <button @click="setWeak(1)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.Tue,  'btn btn-success': post.weak.Tue}" disabled>ВТ</button>
+                                        <button @click="setWeak(2)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.Wed,  'btn btn-success': post.weak.Wed}" disabled>СР</button>
+                                        <button @click="setWeak(3)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.Thu,  'btn btn-success': post.weak.Thu}" disabled>ЧТ</button>
+                                        <button @click="setWeak(4)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.Fri,  'btn btn-success': post.weak.Fri}" disabled>ПТ</button>
+                                        <button @click="setWeak(5)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.Sat,  'btn btn-success': post.weak.Sat}" disabled>СБ</button>
+                                        <button @click="setWeak(6)" type="button" v-bind:class="{'btn btn-secondary': !post.weak.Sun,  'btn btn-success': post.weak.Sun}" disabled>ВС</button>
                                         <button @click="del(post.id)" type="button" class="btn btn-warning">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                                                 <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
@@ -131,7 +131,7 @@
 
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-secondary" href="/" role="button">Назад</a>
+                    <footer-menu></footer-menu>
                 </div>
             </div>
         </div>
@@ -149,20 +149,19 @@
 </style>
 
 <script>
-import Multiselect from 'vue-multiselect'
-import VueTaggableSelect from "vue-taggable-select";
+import FooterMenu from "./FooterMenuComponent";
 
 export default {
     data:function(){
         return {
             weak: {
-                monday: false,
-                tuesday: true,
-                wednesday: true,
-                thursday: true,
-                friday: true,
-                saturday: true,
-                sunday: true,
+                Mon: false,
+                Tue: true,
+                Wed: true,
+                Thu: true,
+                Fri: true,
+                Sat: true,
+                Sun: true,
             },
             themeId: -1,
             saveTheme: -1,
@@ -175,7 +174,7 @@ export default {
         }
     },
     components: {
-        VueTaggableSelect
+        FooterMenu
     },
     mounted() {
         this.update();
@@ -185,25 +184,25 @@ export default {
     methods: {
         setWeak(id){
             if(id === 0) {
-                this.weak.monday = !this.weak.monday;
+                this.weak.Mon = !this.weak.Mon;
             }
             if(id === 1) {
-                this.weak.tuesday = !this.weak.tuesday;
+                this.weak.Tue = !this.weak.Tue;
             }
             if(id === 2) {
-                this.weak.wednesday = !this.weak.wednesday;
+                this.weak.Wed = !this.weak.Wed;
             }
             if(id === 3) {
-                this.weak.thursday = !this.weak.thursday;
+                this.weak.Thu = !this.weak.Thu;
             }
             if(id === 4) {
-                this.weak.friday = !this.weak.friday;
+                this.weak.Fri = !this.weak.Fri;
             }
             if(id === 5) {
-                this.weak.saturday = !this.weak.saturday;
+                this.weak.Sat = !this.weak.Sat;
             }
             if(id === 6) {
-                this.weak.sunday = !this.weak.sunday;
+                this.weak.Sun = !this.weak.Sun;
             }
         },
         addGroup(id) {

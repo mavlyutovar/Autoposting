@@ -10,17 +10,7 @@ class PostTime extends Model
         $theme = Theme::find($this->theme_id);
         $group = Group::find($this->group_id);
         $theme->initGroup($group);
-        dd($theme->sendPost());
-        return ;
-    }
-
-    public function sendAllPost() {
-        $pos = PostTime::find(18);
-        $theme = Theme::find($pos->theme_id);
-        $group = Group::find($pos->group_id);
-        $theme->initGroup($group);
-        dd($theme->sendPost());
-        return ;
+        return $theme->sendPost();
     }
 
     public function getTheme() {
