@@ -28,16 +28,17 @@ class Theme extends Model
         $settings   = json_decode($this->setting);
 
         $audioLoad  = true;
-        $audio      = $this->vk->wallAddThismoodAudio();
+        $audio      = "";
         if($this->probabilityMedia($settings->audioProbability)) {
             $url_audio_board    = json_decode($this->url_audio_board);
-            if(isset($url_audio_board->audioID)) {
+            if(isset($url_audio_board->audioId)) {
 
-                $audios  = (array)$url_audio_board->audioID;
+                $audios  = (array)$url_audio_board->audioId;
                 shuffle($audios);
+                $this->vk->attachments[] = $audios[0];
                 $audio  = $audios[0];
             }
-            if(!$url_audio_board->rndAudio) {
+            if($url_audio_board->rndAudio) {
                 $audio  = $this->vk->wallAddThismoodAudio();
             }
         }
@@ -47,7 +48,7 @@ class Theme extends Model
         if($this->probabilityMedia($settings->textProbability)) {
             $texts  = json_decode($this->text);
             if(isset($texts->text)) {
-                if(!$texts->rndText) {
+                if(!isset($texts->rndText)) {
                     $text     = "🖤";
                     $textLoad = true;
                 }
