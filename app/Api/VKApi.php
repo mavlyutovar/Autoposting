@@ -24,7 +24,6 @@ class VKApi extends Model
         else {
             $this->token = $token;
         }
-        $this->token = 'a3e9d2d3eea7a80e1fbfacbd20ce3a9b516a3d44688533bd708733fd9eff3e8fe13e0f09638987f094639';
 
         $this->api = new Client($this->version);
         $this->api->setDefaultToken($this->token);
@@ -101,7 +100,7 @@ class VKApi extends Model
         $posts = $this->api->request('wall.get', $params, $this->token);
         if(isset($posts['response']['items'])) {
             foreach ($posts['response']['items'] as $post) {
-                if(isset($post['attachments'])) {
+                if(isset($post['attachments']) && $post['marked_as_ads'] == 0) {
                     foreach ($post['attachments'] as $item) {
                         if(isset($item['photo'])) {
                             $this->photos[] = $item['photo']['owner_id']."_".$item['photo']['id']; //ЗАПИСЫВАТЬ В ЛОГАХ
