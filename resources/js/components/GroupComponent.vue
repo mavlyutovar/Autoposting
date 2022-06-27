@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-secondary" href="/" role="button">Назад</a>
+                    <footer-menu></footer-menu>
                 </div>
             </div>
         </div>
@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import FooterMenu from "./FooterMenuComponent";
 export default {
     data:function(){
         return{
@@ -69,6 +70,9 @@ export default {
     },
     mounted() {
         this.update();
+    },
+    components: {
+        FooterMenu
     },
     methods: {
         add: function() {
