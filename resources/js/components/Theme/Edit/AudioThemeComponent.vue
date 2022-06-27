@@ -2,6 +2,13 @@
     <div class="row">
         <div class="col-7 col-lg-7 ">
             <ul class="list-group">
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                    <div class="ml-2 form-check form-switch">
+                        <input class="form-check-input cursor-pointer" type="checkbox" @click="randomAudio()" v-model="theme.rndAudio">
+                        <label class="form-check-label"> Случайный трек из базы данных </label>
+                    </div>
+                </li>
                 <li v-for="(item, index) in theme.audioId" class="list-group-item d-flex justify-content-between align-items-center">
                     <span class="text-dark">{{index+1}}</span>
                     <span class="mr-auto p-2">{{ item }}</span>
@@ -19,8 +26,8 @@
                     <div class="card-header">Формат: <b>audio-2001177523_68177523</b></div>
                     <div class="card-body">
                         <h6 class="mb-3">Поддерживается только музыка из Вконтакте. Можно записывать через запятую.</h6>
-                        <textarea v-model="audioAdd" class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        <div class="d-flex justify-content-around align-items-center mt-3">
+                        <textarea v-model="audioAdd" class="form-control mb-3" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        <div class="ml-3 d-flex justify-content-around align-items-center mt-3">
                             <button @click="add()" data-toggle="tooltip" data-placement="left" title="Добавьте несколько сообщений одной тематики" type="submit" class="justify-content-end btn btn-success">Добавить</button>
                         </div>
                     </div>
@@ -35,7 +42,8 @@ export default {
     data:function(){
         return{
             theme: {
-                audioId: true
+                audioId: true,
+                rndAudio: true,
             },
             audioAdd: "",
         }
@@ -44,6 +52,9 @@ export default {
         this.update();
     },
     methods: {
+        randomAudio: function() {
+            this.theme.rndAudio = !this.theme.rndAudio;
+        },
         updatePercent() {
             this.$emit('updPercent', {
                 userid: this.userid,
@@ -52,6 +63,7 @@ export default {
         add: function() {
             axios.post('/add-audio-theme', {
                 url_audio_board: this.audioAdd,
+                rndAudio: this.theme.rndAudio,
                 //description: this.description
             }).then((response) => {
                 console.log(response.data)
@@ -62,6 +74,7 @@ export default {
         update: function() {
             axios.get('/show-audio-theme').then((response) => {
                 this.theme = response.data;
+                console.log(this.theme);
             });
         },
         del: function(id) {

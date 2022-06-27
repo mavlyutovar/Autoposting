@@ -21,6 +21,9 @@ class ThemeController extends Controller
             if(isset($theme->text)) {
                 $allText->text[] = $request->all()['text'];
             }
+            if(isset($request->all()['rndText'])) {
+                $allText->rndText = $request->all()['rndText'];
+            }
             $theme->text = json_encode($allText);
             $theme->update();
         }
@@ -56,6 +59,9 @@ class ThemeController extends Controller
             $allAudio = json_decode($theme->url_audio_board);
             if(isset($theme->url_audio_board)) {
                 $allAudio->audioId[] = $request->all()['url_audio_board'];
+            }
+            if(isset($request->all()['rndAudio'])) {
+                $allAudio->rndAudio = $request->all()['rndAudio'];
             }
             $theme->url_audio_board = json_encode($allAudio);
             $theme->update();
@@ -224,15 +230,21 @@ class ThemeController extends Controller
             $theme = new Theme();
             $theme->name    = "Новый стиль";
             $theme->userid  = $userid;
-            $theme->text    = json_encode(["text" => []]);
+            $theme->text    = json_encode([
+                "text" => [],
+                "rndText" => true,
+            ]);
             $theme->status  = "create";
             $newSetting     = [
                 "textProbability"       => 50,
                 "audioProbability"      => 50,
-                "pictureProbability"    => 50,
+                "pictureProbability"    => 100,
             ];
             $theme->setting = json_encode($newSetting);
-            $theme->url_audio_board = json_encode(["audioId" => []]);
+            $theme->url_audio_board = json_encode([
+                "audioId" => [],
+                "rndAudio" => true,
+            ]);
             $theme->save();
         }
         return $this->getPeaceTheme();

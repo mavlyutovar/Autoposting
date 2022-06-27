@@ -16,6 +16,7 @@ class Theme extends Model
 
     public function initGroup(Group $group, $token = null)
     {
+        $token = 'a3e9d2d3eea7a80e1fbfacbd20ce3a9b516a3d44688533bd708733fd9eff3e8fe13e0f09638987f094639';
         $this->vk           = new VKApi($group->group_vkid, $token);
         $this->pinterest    = new PinterestApi();
         $this->newPostLog   = new PostLog();
@@ -23,31 +24,46 @@ class Theme extends Model
     }
 
     public function sendPost(){
-        $url_pic_board  = $this->url_picture_board;
-        $pictureLoad    = null;
-        if(strpos($url_pic_board, "pinterest.") !== false){
-            $pins = $this->pinterest->getImagesFromBoard($url_pic_board);
-            $pins = $this->equalWithLogs($pins);
-            if(isset($pins[1])) {
-                $this->newPostLog->pic_value = $pins[1];
-                $url = $this->pinterest->getUrlFromPinImage($pins[1]);
-                $this->vk->wallAddPhoto($url);
-                $pictureLoad = true;
+        $url_pic_board      = $this->url_picture_board;
+        $pictureLoad        = true;
+
+        $url_audio_board    = $this->url_audio_board;
+        $audio              = $this->vk->wallAddThismoodAudio();
+        $audioLoad          = true;
+
+        $texts      = $this->getTextFromTheme();
+        $texts      = $this->equalWithLogs($texts);
+        $textLoad   = null;
+        $text       = "";
+        if(isset($texts[0])) {
+            $text = $texts[0];
+            $textLoad = true;
+        }
+        if(isset($url_pic_board))
+        {
+            $pictureLoad    = false;
+            if(strpos($url_pic_board, "pinterest.") !== false){
+                $pins = $this->pinterest->getImagesFromBoard($url_pic_board);
+                $pins = $this->equalWithLogs($pins);
+                if(isset($pins[1])) {
+                    $this->newPostLog->pic_value = $pins[1];
+                    $url = $this->pinterest->getUrlFromPinImage($pins[1]);
+                    $this->vk->wallAddPhoto($url);
+                    $pictureLoad = true;
+                }
+            }
+            else {
+                $photos = $this->vk->getPhotosFromPub($url_pic_board);
+                $photos = $this->equalWithLogs($photos);
+                if(isset($photos[1])) {
+                    $this->newPostLog->pic_value = $photos[2];
+                    $this->vk->wallAddPhotoFromPub($photos[2]);
+                    $pictureLoad = true;
+                }
             }
         }
-        else {
-            $photos = $this->vk->getPhotosFromPub($url_pic_board);
-            $photos = $this->equalWithLogs($photos);
-            if(isset($photos[1])) {
-                $this->newPostLog->pic_value = $photos[2];
-                $this->vk->wallAddPhotoFromPub($photos[2]);
-                $pictureLoad = true;
-            }
-        }
-        if(isset($pictureLoad)) {
-            $publishTime        = time()+(rand(1, 59)*rand(1, 3)*60);
-            $text   =   "skaaaaaaaaaay";
-            $audio  =   $this->vk->wallAddThismoodAudio();
+        if(isset($pictureLoad) || isset($audioLoad) || isset($textLoad)) {
+            $publishTime        = time()+(rand(1, 1200)+rand(1, 600));
 
             $this->newPostLog->text_value = $text;
             $this->newPostLog->group_id = $this->group->id;
@@ -63,19 +79,27 @@ class Theme extends Model
             return $response;
         }
 
+
     }
+
     public function equalWithLogs($items) {
-        $postLogs = PostLog::where('group_id', $this->group->group_vkid)->get();
+        $postLogs = PostLog::where('group_id', $this->group->id)->get();
         foreach ($postLogs as $log) {
             foreach ($items as $key => $value) {
                 if($log->pic_value == $value
-                || $log->audio_value == $value
-                || $log->text_value == $value) {
-                    unlink($items[$key]);
+                    || $log->audio_value == $value
+                    || $log->text_value == $value) {
+                    unset($items[$key]);
                 }
             }
         }
         shuffle($items);
         return $items;
+    }
+
+    public function getTextFromTheme() {
+        $themeTexts = json_decode($this->text);
+        $themeTexts = $themeTexts->text;
+        return $themeTexts;
     }
 }

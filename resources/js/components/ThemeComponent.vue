@@ -40,7 +40,7 @@
                     </Transition>
                 </div>
                 <div class="card-footer">
-                    <a class="btn btn-secondary" href="/" role="button">Назад</a>
+                    <footer-menu></footer-menu>
                 </div>
             </div>
         </div>
@@ -53,6 +53,8 @@
 Vue.component('edit-theme-component', require('./Theme/EditThemeComponent.vue').default);
 Vue.component('create-theme-component', require('./Theme/CreateThemeComponent.vue').default);
 
+import FooterMenu from "./FooterMenuComponent";
+
 export default {
     data:function(){
         return{
@@ -61,6 +63,9 @@ export default {
             isCreateTheme: true,
             isShowTheme: false,
         }
+    },
+    components: {
+        FooterMenu
     },
     methods: {
         createTheme() {
