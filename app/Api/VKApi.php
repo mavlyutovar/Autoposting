@@ -78,7 +78,7 @@ class VKApi extends Model
         $params['photo']       = $upload->photo;
         $params['server']      = $upload->server;
         $params['hash']        = $upload->hash;
-        $params['caption']     = "https://thismood.info/";
+        //$params['caption']     = "https://thismood.info/";
         $save = $this->api->request('photos.saveWallPhoto', $params, $this->token)['response'];
         $this->attachments[] = sprintf('photo%s_%s', $save[0]['owner_id'], $save[0]['id']);
         Storage::delete($image_path);

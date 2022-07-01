@@ -27,7 +27,7 @@ class PostTimeController extends Controller
         $dayOk = false;
         if($themeId > -1)
         {
-            if(count($groups)) {
+            if(sizeof($groups)) {
                 foreach ($weak as $day){
                     if($day === true){
                         $dayOk = true;

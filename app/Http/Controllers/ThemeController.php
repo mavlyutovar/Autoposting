@@ -144,7 +144,8 @@ class ThemeController extends Controller
         }
         if(isset($theme->url_audio_board)) {
             $allAudio       = json_decode($theme->url_audio_board);
-            $countAudio     = count($allAudio->audioId);
+            $countArr       = (array) $allAudio->audioId;
+            $countAudio     = sizeof($countArr);
             $percentAudio   = 0;
             while($countAudio > 0 && $percentAudio < 20){
                 $percentAudio    += 4;
@@ -154,7 +155,8 @@ class ThemeController extends Controller
         }
         if(isset($theme->text)) {
             $allText        = json_decode($theme->text);
-            $countText      = count($allText->text);
+            $countArr       = (array) $allText->text;
+            $countText      = sizeof($countArr);
             $percentText    = 0;
             while($countText > 0 && $percentText < 30){
                 $percentText    += 6;
@@ -213,7 +215,7 @@ class ThemeController extends Controller
     {
         $userid = Auth::id();
         $theme  = $this->getIsEditTheme();
-        if(count($theme) > 0) { //Убираем статус редактирования.
+        if(isset($theme)) { //Убираем статус редактирования.
             $buffer_theme               = $this->getEditBufferTheme();
             $theme->name                = $buffer_theme->name;
             $theme->description         = $buffer_theme->description;
@@ -226,7 +228,7 @@ class ThemeController extends Controller
             $buffer_theme->delete();
         }
         $theme = Theme::where("userid",$userid)->where("status", "create")->first();
-        if(count($theme) == 0){ //Заранее создаем пустое объявление
+        if(!isset($theme)){ //Заранее создаем пустое объявление
             $theme = new Theme();
             $theme->name    = "Новый стиль";
             $theme->userid  = $userid;
@@ -296,7 +298,7 @@ class ThemeController extends Controller
     {
         //Сначала работаем с редактируемой темой
         $theme = $this->getEditBufferTheme();
-        if(count($theme) > 0){
+        if(isset($theme)){
             return $theme;
         }
         //Потом работаем с новой темой

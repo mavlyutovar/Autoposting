@@ -27,34 +27,48 @@ class Theme extends Model
     public function sendPost(){
         $settings   = json_decode($this->setting);
 
-        $audioLoad  = true;
-        $audio      = "";
+        $audioLoad          = true;
+        $audio              = "";
         if($this->probabilityMedia($settings->audioProbability)) {
             $url_audio_board    = json_decode($this->url_audio_board);
             if(isset($url_audio_board->audioId)) {
 
                 $audios  = (array)$url_audio_board->audioId;
                 shuffle($audios);
-                $this->vk->attachments[] = $audios[0];
-                $audio  = $audios[0];
+                $getDay = intval(date("d"));
+                $randomtrack = rand(0, $getDay);
+                if(isset($audios[$randomtrack])){
+                    $this->vk->attachments[] = $audios[$randomtrack];
+                    $audio  = $audios[$randomtrack];
+                }
+                else {
+                    if(isset($audios[0])) {
+                        $this->vk->attachments[] = $audios[0];
+                        $audio  = $audios[0];
+                    }
+                }
             }
-            if($url_audio_board->rndAudio) {
-                $audio  = $this->vk->wallAddThismoodAudio();
+            if(isset($url_audio_board->rndAudio)) {
+                if($url_audio_board->rndAudio) {
+                    $audio  = $this->vk->wallAddThismoodAudio();
+                }
             }
         }
 
-        $textLoad   = null;
-        $text       = "";
+        $textLoad           = null;
+        $text               = "";
         if($this->probabilityMedia($settings->textProbability)) {
             $texts  = json_decode($this->text);
             if(isset($texts->text)) {
-                if(!isset($texts->rndText)) {
-                    $text     = "🖤";
-                    $textLoad = true;
+                if(isset($texts->rndText)) {
+                    if($texts->rndText) {
+                        $text     = " ".$this->getEmoji();
+                        $textLoad = true;
+                    }
                 }
                 $texts      = $this->equalWithLogs($texts->text);
                 if(isset($texts[0])) {
-                    $text       = $texts[0];
+                    $text     = $texts[0].$text;
                     $textLoad = true;
                 }
             }
@@ -69,9 +83,9 @@ class Theme extends Model
                 if(strpos($url_pic_board, "pinterest.") !== false){
                     $pins = $this->pinterest->getImagesFromBoard($url_pic_board);
                     $pins = $this->equalWithLogs($pins);
-                    if(isset($pins[1])) {
-                        $this->newPostLog->pic_value = $pins[1];
-                        $url = $this->pinterest->getUrlFromPinImage($pins[1]);
+                    if(isset($pins[0])) {
+                        $this->newPostLog->pic_value = $pins[0];
+                        $url = $this->pinterest->getUrlFromPinImage($pins[0]);
                         $this->vk->wallAddPhoto($url);
                         $pictureLoad = true;
                     }
@@ -79,9 +93,9 @@ class Theme extends Model
                 else {
                     $photos = $this->vk->getPhotosFromPub($url_pic_board);
                     $photos = $this->equalWithLogs($photos);
-                    if(isset($photos[1])) {
-                        $this->newPostLog->pic_value = $photos[2];
-                        $this->vk->wallAddPhotoFromPub($photos[2]);
+                    if(isset($photos[0])) {
+                        $this->newPostLog->pic_value = $photos[0];
+                        $this->vk->wallAddPhotoFromPub($photos[0]);
                         $pictureLoad = true;
                     }
                 }
@@ -109,14 +123,17 @@ class Theme extends Model
 
     }
 
-    public function equalWithLogs($items) {
+    public function equalWithLogs(array $items = []) {
         $postLogs = PostLog::where('group_id', $this->group->id)->get();
         foreach ($postLogs as $log) {
             foreach ($items as $key => $value) {
                 if($log->pic_value == $value
                     || $log->audio_value == $value
                     || $log->text_value == $value) {
-                    unset($items[$key]);
+                    if(sizeof($items) > 1){
+                        unset($items[$key]);
+                    }
+                    else break;
                 }
             }
         }
@@ -130,5 +147,19 @@ class Theme extends Model
             return true;
         }
         return false;
+    }
+
+    public function getEmoji()
+    {
+        $emoji = array(
+            '😉','😊','😍','🤑',
+            '😎','😈','👿','💀','👽','🙈','🙉',
+            '💓','💞','💕','💔','💛','💚','💙','💜','💥','💫','👇','⛰','🌋','🗻','🏕','🏖','🏜','🏝','🏞','🌟','🌠','🌌',
+            '🌈','🔥','💧','🌊','🎈','🎉','💎','🔊','🎧','📷','💸','🔑','','📡','💉','🗿', '🚸','⛔','🔞','🔞','🔞',
+        );
+
+        $randomsmile = intval(date("d"));
+        $randomsmile += rand(0, 22);
+        return $emoji[$randomsmile];
     }
 }

@@ -41,16 +41,23 @@ class HourlyCheckPost extends Command
      */
     public function handle()
     {
-        $nowTime = date("H");
+        set_time_limit(0);
+        $nowTime = date("H")+5;
         Log::info($nowTime);
         $postTimes = PostTime::where("time", $nowTime)->get();
+        Log::info("Количество тем: ".sizeof($postTimes));
         foreach ($postTimes as $generatePost) {
+            Log::info("posttime ((".$generatePost->id);
             $weak = (array) json_decode($generatePost->weak);
-            if($weak[strtolower(date("D"))] === true){
+
+            Log::info("date ((".date("D"));
+            if($weak[date("D")] === true){
+                sleep(10);
                 $infopost = $generatePost->sendPost();
+                var_dump($infopost);
                 Log::info("(".$generatePost->id.") PostTime: ".$generatePost->time);
             }
-            return true;
         }
+        return true;
     }
 }
