@@ -1,10 +1,10 @@
 <template>
     <div>
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div class="d-flex justify-content-center  col-6">
-                <Progress ref="updateProgress"></Progress>
-            </div>
-            <div class="d-flex justify-content-end">
+        <div class="d-flex justify-content-center align-items-center mb-3">
+<!--            <div class="d-flex justify-content-center  col-6">-->
+<!--                <Progress ref="updateProgress"></Progress>-->
+<!--            </div>-->
+            <div class="d-flex justify-content-center align-items-center">
                 <button @click="setTextTheme()" type="button" class="btn btn-secondary m-1 active">Текст</button>
                 <button @click="setAudioTheme()" type="button" class="btn btn-secondary m-1">Аудио</button>
                 <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Изображения</button>

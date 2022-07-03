@@ -49,9 +49,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/add-pic-theme', "ThemeController@addPicture")->name('add-pic-theme');
     Route::post('/update-pic-theme', "ThemeController@updatePicture")->name('update-pic-theme');
 
-    Route::get('/show-text-theme', "ThemeController@showText")->name('show-text-theme');
-    Route::post('/update-text-theme', "ThemeController@updateText")->name('update-text-theme');
-    Route::post('/add-text-theme', "ThemeController@addText")->name('add-text-theme');
+    Route::post('/save-text', "ThemeController@saveText")->name('save-text');
+    Route::get('/show-text', "ThemeController@showText")->name('show-text');
+    Route::post('/del-text/{id}', "ThemeController@delText")->name('del-text');
 
     Route::get('/show-audio-theme', "ThemeController@showAudio")->name('show-audio-theme');
     Route::post('/update-audio-theme', "ThemeController@updateAudio")->name('update-audio-theme');

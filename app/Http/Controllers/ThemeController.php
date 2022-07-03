@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\StyleText;
+use App\Text;
 use App\Theme;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,44 +15,116 @@ class ThemeController extends Controller
         $theme = $this->getUseNowTheme();
         return view("layouts.theme_list", [ 'data' => $theme]);
     }
-    public function addText(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
+
+    public function listCases()
     {
-        $theme = $this->getUseNowTheme();
-        if(isset($request->all()['text'])) {
-            $allText = json_decode($theme->text);
-            if(isset($theme->text)) {
-                $allText->text[] = $request->all()['text'];
+        $cases = [];
+        $userid = Auth::id();
+        $styles = StyleText::where("userid", $userid)->get();
+        foreach ($styles as $style) {
+            $case['id']     = $style->id;
+            $case['name']   = $style->name;
+            $texts = Text::where("style_id", $style->id)->get();
+            $orderId = 1;
+            foreach ($texts as $item) {
+                $case['items'][$orderId] = $item->string_value;
+                $orderId++;
             }
-            if(isset($request->all()['rndText'])) {
-                $allText->rndText = $request->all()['rndText'];
+            if($orderId == 1) {
+                $style->delete();
+                continue;
             }
-            $theme->text = json_encode($allText);
-            $theme->update();
+            $cases[] = $case;
         }
-        return $theme->text;
+        return $cases;
     }
 
     public function showText(Request $request)
     {
-        $theme = $this->getUseNowTheme();
-        return $theme->text;
+        return $this->listCases();
     }
 
-    public function updateText(Request $request)
+    public function delText(Request $request, $id)
     {
-        $theme = $this->getUseNowTheme();
-        if(isset($request->all()['id'])) {
-            $allText = json_decode($theme->text);
-            $del_id = $request->all()['id'];
-
-            unset($allText->text[$del_id]);
-            array_splice($allText->text, $del_id, 0);
-
-            $theme->text = json_encode($allText);
-            $theme->update();
+        if($id) {
+            $texts = Text::where('style_id', $id)->get();
+            foreach ($texts as $text) {
+                $text->delete();
+            }
+            StyleText::find($id)->delete();
+            return $this->listCases();
         }
-        return $theme->text;
+        return true;
     }
+
+
+    public function saveText(Request $request)
+    {
+        $texts = (object)$request->all()['texts'] ?? null;
+        $id = (int)$request->all()['id'] ?? null;
+        $userid = Auth::id();
+        if(isset($texts) && isset($texts->items)) {
+            shuffle($texts->items);
+            if($texts->is == "new") {
+                $style = new StyleText();
+                $style->name = $texts->name;
+                $style->userid = $userid;
+                $style->save();
+                $idStyle = $style->id;
+                $day = 31;
+                foreach ($texts->items as $item) {
+                    $newText                = new Text();
+                    $newText->style_id      = $idStyle;
+                    $newText->string_value  = $item;
+                    $newText->case          = $day;
+                    $newText->save();
+                    $day--;
+                    if($day < 1) {
+                        $day = 31;
+                    }
+                }
+            }
+            else if($texts->is == "edit" && isset($id)) {
+                $style = StyleText::find($id);
+                $style->name = $texts->name;
+                $style->userid = $userid;
+                $style->save();
+                $idStyle = $style->id;
+                $day = 31;
+
+                $oldTexts = Text::where('style_id', $idStyle)->get();
+                foreach ($oldTexts as $text) {
+                    $text->delete();
+                }
+
+                foreach ($texts->items as $item) {
+                    $newText                = new Text();
+                    $newText->style_id      = $idStyle;
+                    $newText->string_value  = $item;
+                    $newText->case          = $day;
+                    $newText->save();
+                    $day--;
+                    if($day < 1) {
+                        $day = 31;
+                    }
+                }
+            }
+        }
+        return $this->listCases();
+    }
+
+//array:1 [
+//"texts" => array:1 [
+//0 => array:2 [
+//"name" => "фыв"
+//"items" => array:3 [
+//0 => "ыфв"
+//1 => "фыв"
+//2 => "фыв"
+//]
+//]
+//]
+//]
 
     public function addAudio(Request $request)//Добавить ограничение и уведомление, что больше пяти нельзя
     {

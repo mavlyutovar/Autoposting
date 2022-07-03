@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStyleTextTable extends Migration
+class AddColumnsUseridToStyleTexts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,8 @@ class CreateStyleTextTable extends Migration
      */
     public function up()
     {
-        Schema::create('style_texts', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name')->comment('наименование группы текстов');
-            $table->timestamps();
+        Schema::table('style_texts', function (Blueprint $table) {
+            $table->integer('userid');
         });
     }
 
@@ -27,6 +25,8 @@ class CreateStyleTextTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('style_text');
+        Schema::table('style_texts', function (Blueprint $table) {
+            $table->dropColumn('userid');
+        });
     }
 }
