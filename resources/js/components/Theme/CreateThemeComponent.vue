@@ -5,10 +5,9 @@
 <!--                <Progress ref="updateProgress"></Progress>-->
 <!--            </div>-->
             <div class="d-flex justify-content-center align-items-center">
-                <button @click="setTextTheme()" type="button" class="btn btn-secondary m-1 active">Текст</button>
-                <button @click="setAudioTheme()" type="button" class="btn btn-secondary m-1">Аудио</button>
-                <button @click="setPictureTheme()" type="button" class="btn btn-secondary m-1">Изображения</button>
-                <button @click="setSettingsTheme()" type="button" :disabled='saveButton' class="btn btn-primary m-1">Настройки</button>
+                <button @click="setTextTheme()" type="button"  v-bind:class="{'btn btn-secondary': !textShow,  'btn btn-primary active': textShow, 'btn m-1':true}">Текст</button>
+                <button @click="setAudioTheme()" type="button" v-bind:class="{'btn btn-secondary': !audioShow,  'btn btn-primary active': audioShow, 'btn m-1':true}">Аудио</button>
+                <button @click="setPictureTheme()" type="button" v-bind:class="{'btn btn-secondary': !pictureShow,  'btn btn-primary active': pictureShow, 'btn m-1':true}">Изображения</button>
             </div>
         </div>
 
@@ -24,14 +23,16 @@ import SetTextTheme from './Edit/TextThemeComponent'
 Vue.component('set-text-theme', require('./Edit/TextThemeComponent').default);
 Vue.component('set-audio-theme', require('./Edit/AudioThemeComponent').default);
 Vue.component('set-picture-theme', require('./Edit/PictureThemeComponent').default);
-Vue.component('set-setting-theme', require('./Edit/SettingThemeComponent').default);
 
 export default {
     data:function(){
         return{
             currentComponent: "set-text-theme",
             percent: 50,
-            saveButton: true,
+            textShow: true,
+            audioShow: false,
+            pictureShow: false,
+            settingShow: false,
         }
     },
     mounted() {
@@ -44,18 +45,30 @@ export default {
     methods: {
         setTextTheme: function() {
             this.currentComponent = "set-text-theme";
+            this.textShow = true;
+            this.audioShow = false;
+            this.pictureShow = false;
         },
         setAudioTheme: function() {
             this.currentComponent = "set-audio-theme";
+            this.textShow = false;
+            this.audioShow = true;
+            this.pictureShow = false;
         },
         setPictureTheme: function() {
             this.currentComponent = "set-picture-theme";
+            this.textShow = false;
+            this.audioShow = false;
+            this.pictureShow = true;
         },
         setSettingsTheme: function() {
             this.currentComponent = "set-setting-theme";
+            this.textShow = false;
+            this.audioShow = false;
+            this.pictureShow = false;
         },
         getPercent: function() {
-            this.percent = 0;
+            /*this.percent = 0;
             axios.post('/how-ready', {
                 text: this.percent,
                 //description: this.description
@@ -66,7 +79,7 @@ export default {
                     this.saveButton = false;
                 }
                 this.$refs.updateProgress.update();
-            });
+            });*/
 
         }
     }
