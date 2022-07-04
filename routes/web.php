@@ -33,29 +33,22 @@ Route::group(['middleware' => 'auth'], function () {
     /*              РОУТЫ ТЕМ */
     Route::get('/themes', "ThemeController@index")->name('index');
 
-    Route::post('/duplicate-theme/{id}', "ThemeController@duplicateThemeModel")->name('duplicate-theme');
-    Route::post('/show-theme/{id}', "ThemeController@showThemeModel")->name('show-theme');
-    Route::post('/delete-theme/{id}', "ThemeController@deleteTheme")->name('delete-theme');
-    Route::post('/edit-theme/{id}', "ThemeController@setEditTheme")->name('edit-theme');
-    Route::post('/undo-edit-theme', "ThemeController@undoEditTheme")->name('undo-edit-theme');
-    Route::post('/get-all-theme', "ThemeController@getAllTheme")->name('get-all-theme');
-
-
     Route::post('/get-theme', "ThemeController@getThemeModel")->name('get-theme');
     Route::post('/how-ready', "ThemeController@getPercentReadyTheme")->name('how-ready');
     Route::post('/set-name-theme', "ThemeController@setThemeName")->name('set-name-theme');
 
-    Route::get('/show-pic-theme', "ThemeController@showPicture")->name('show-pic');
-    Route::post('/add-pic-theme', "ThemeController@addPicture")->name('add-pic-theme');
-    Route::post('/update-pic-theme', "ThemeController@updatePicture")->name('update-pic-theme');
+    /*Роуты редактирования Медия */
+    Route::get('/show-audio', "ThemeController@showAudio")->name('show-audio');
+    Route::post('/save-audio', "ThemeController@saveAudio")->name('save-audio');
+    Route::post('/del-audio/{id}', "ThemeController@delAudio")->name('del-audio');
 
-    Route::post('/save-text', "ThemeController@saveText")->name('save-text');
     Route::get('/show-text', "ThemeController@showText")->name('show-text');
+    Route::post('/save-text', "ThemeController@saveText")->name('save-text');
     Route::post('/del-text/{id}', "ThemeController@delText")->name('del-text');
 
-    Route::get('/show-audio-theme', "ThemeController@showAudio")->name('show-audio-theme');
-    Route::post('/update-audio-theme', "ThemeController@updateAudio")->name('update-audio-theme');
-    Route::post('/add-audio-theme', "ThemeController@addAudio")->name('add-audio-theme');
+    Route::get('/show-picture', "ThemeController@showPicture")->name('show-picture');
+    Route::post('/save-picture', "ThemeController@savePicture")->name('save-picture');
+    Route::post('/del-picture/{id}', "ThemeController@delPicture")->name('del-picture');
 
     Route::post('/get-setting-theme', "ThemeController@getSettingTheme")->name('get-setting-theme');
     Route::post('/set-setting-theme', "ThemeController@setSettingTheme")->name('set-setting-theme');
