@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\ThemeModels;
 
 use Illuminate\Database\Eloquent\Model;
 
-class StyleText extends Model
+class Audio extends Model
 {
     //
 }
