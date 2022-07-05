@@ -20,7 +20,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/posts', "PostTimeController@index")->name('index');
     Route::post('/add-post', "PostTimeController@addNewPostTime")->name('add-post');
-    Route::post('/show-all-post', "PostTimeController@showAllPostTime")->name('show-all-post');
+    Route::post('/show-all-post/{group_id}', "PostTimeController@showAllPostTime")->name('show-all-post');
     Route::post('/delete-post/{id}', "PostTimeController@deletePostTime")->name('delete-post');
     Route::post('/send-post/{id}', "PostTimeController@sendPostTime")->name('send-post');
 

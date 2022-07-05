@@ -20,14 +20,17 @@ class PostTimeController extends Controller
 
     public function addNewPostTime(Request $request)
     {
-        $themeId = $request->input('themeId') ?? -1;
-        $groups = $request->input('groups') ?? [];
-        $weak = $request->input('weak') ?? [];
-        $time = $request->input('time') ?? 13;
+        $setting    = $request->input('setting') ?? null;
+        $style      = $request->input('style') ?? null;
+        $weak       = $request->input('weak') ?? [];
+        $time       = $request->input('time') ?? 13;
+        $urlSource  = $request->input('urlSource') ?? 13;
+        $group      = $request->input('groupInfo') ?? null;
+
         $dayOk = false;
-        if($themeId > -1)
+        if(isset($setting))
         {
-            if(sizeof($groups)) {
+            if(isset($style)) {
                 foreach ($weak as $day){
                     if($day === true){
                         $dayOk = true;
@@ -35,37 +38,45 @@ class PostTimeController extends Controller
                     }
                 }
                 if($dayOk === true) {
-                    foreach ($groups as $groupId){
-                        if(isset($groupId))
-                        {
-                            $postTime           = new PostTime();
-                            $postTime->group_id = $groupId;
-                            $postTime->theme_id = $themeId;
-                            $postTime->time     = $time;
-                            $postTime->userid   = Auth::id();
-                            $postTime->weak     = json_encode($weak);
-                            $postTime->save();
-                        }
+                    if(isset($group))
+                    {
+                        $userid = Auth::id();
+
+                        $theme              = new Theme();
+                        $theme->style       = json_encode($style);
+                        $theme->setting     = json_encode($setting);
+                        $theme->url_source  = $urlSource;
+                        $theme->userid      = $userid;
+                        $theme->save();
+
+                        $postTime           = new PostTime();
+                        $postTime->group_id = $group['id'];
+                        $postTime->theme_id = $theme->id;
+                        $postTime->time     = $time;
+                        $postTime->userid   = $userid;
+                        $postTime->weak     = json_encode($weak);
+                        $postTime->status   = "run";
+                        $postTime->save();
                     }
-                    return $this->getPostTimes();
+                    return $this->getPostTimes($group['id']);
                 }
                 else {
                     return ['error' => 'Выберите хотя бы один день'];
                 }
             }
             else {
-                return ['error' => 'Добавьте группу'];
+                return ['error' => 'В запросе отсутствует style'];
             }
         }
         else {
-            return ['error' => 'Выберите тему'];
+            return ['error' => 'В запросе отсутствует setting'];
         }
         return $this->getPostTimes();
     }
 
-    public function showAllPostTime()
+    public function showAllPostTime(Request $request, $group_id)
     {
-        return $this->getPostTimes();
+        return $this->getPostTimes($group_id);
     }
 
     public function deletePostTime(Request $request, $id)
@@ -82,9 +93,13 @@ class PostTimeController extends Controller
         return "";
     }
 
-    public function getPostTimes()
+    public function getPostTimes($group_id = null)
     {
-        $postTime = PostTime::where('userid', Auth::id())->get();
+        $postTime = PostTime::where('userid', Auth::id());
+        if($group_id) {
+            $postTime = $postTime->where('group_id', $group_id);
+        }
+        $postTime = $postTime->orderBy('time', 'asc')->get();
         foreach ($postTime as $post){
             $post->themeName = "-";
             $post->groupName = "-";

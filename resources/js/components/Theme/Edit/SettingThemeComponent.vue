@@ -1,26 +1,16 @@
 <template>
-    <div class="card-deck">
+    <div class="card-deck" name="setting">
         <div class="card mb-4">
-            <div class="card-body ">
-                <h5 class="card-title">Раздел постов</h5>
-                <div class="mb-4">
-                    <h5 class="mb-3 text-center">
-                        Начните с выбора группы
-                    </h5>
-                    <div class="dropdown w-100">
-                        <button class="btn w-100 btn-primary dropdown-toggle" type="button" id="groupsMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            {{groupInfo}}
-                        </button>
-                        <div class="dropdown-menu w-100 " aria-labelledby="groupsMenuButton">
-                            <ul class="list-group list-group-flush">
-                                <li v-for="(group, index) in groups" class="list-group-item">
-                                    <a class="dropdown-item" @click="setGroup(index)" href="#">{{ group.name }}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div><hr>
+            <div class="card-body">
+
+                <h3 v-if="postCase" class="card-title">
+                    Редактируем пост на {{postCase.time}}:00
+                </h3>
+                <h5 v-else class="card-title">Добавление постов</h5>
                 <div class="row d-flex justify-content-center align-items-center mb-3">
+                    <h5 class="mb-3 text-center">
+                        Отредактируйте настройки поста
+                    </h5>
                     <div class="d-flex justify-content-center  col-4">
                         <round-slider
                             v-model="setting.textProbability"
@@ -36,10 +26,10 @@
                         <button class="btn w-100 btn-success dropdown-toggle mb-3" type="button" id="textsMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{textInfo}}
                         </button>
-                        <div class="dropdown-menu w-100 " aria-labelledby="textsMenuButton">
+                        <div class="dropdown-menu w-75 " aria-labelledby="textsMenuButton">
                             <ul class="list-group list-group-flush">
-                                <li v-for="(group, index) in groups" class="list-group-item">
-                                    <a class="dropdown-item" @click="addTheme(index)" href="#">{{ group.name }}</a>
+                                <li v-for="(text, index) in textCases" class="list-group-item">
+                                    <a class="dropdown-item" @click="setText(text)" >{{ text.name }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -68,16 +58,16 @@
                         <button class="btn w-75 btn-success dropdown-toggle mb-3" type="button" id="audiosMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{audioInfo}}
                         </button>
-                        <div class="dropdown-menu  " aria-labelledby="audiosMenuButton">
+                        <div class="dropdown-menu  w-50" aria-labelledby="audiosMenuButton">
                             <ul class="list-group list-group-flush">
-                                <li v-for="(group, index) in groups" class="list-group-item">
-                                    <a class="dropdown-item" @click="addTheme(index)" href="#">{{ group.name }}</a>
+                                <li v-for="(audio, index) in audioCases" class="list-group-item">
+                                    <a class="dropdown-item" @click="setAudio(audio)" >{{ audio.name }}</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="btn-group w-auto mb-3" role="group" aria-label="Basic example">
                             <button @click="setAudioCount(-1)" type="button" class="btn btn-secondary">-</button>
-                            <button @click="setAudioCount(1)" type="button" class="btn btn-primary">{{  audios.count }} эл</button>
+                            <button @click="setAudioCount(1)" type="button" class="btn btn-primary">{{ style.audioCount }} эл</button>
                             <button @click="setAudioCount(1)" type="button" class="btn btn-secondary">+</button>
                         </div>
                         <h5>Настройте вероятность добавления случайной <b>аудиозаписи</b> в пост. Отредактируйте настройки. <b>Нажмите</b> на + для добавления нескольких аудиозаписей.</h5>
@@ -102,16 +92,16 @@
                         <button class="btn w-75 btn-success dropdown-toggle mb-3" type="button" id="picturesMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{pictureInfo}}
                         </button>
-                        <div class="dropdown-menu  " aria-labelledby="picturesMenuButton">
+                        <div class="dropdown-menu  w-50" aria-labelledby="picturesMenuButton">
                             <ul class="list-group list-group-flush">
-                                <li v-for="(group, index) in groups" class="list-group-item">
-                                    <a class="dropdown-item" @click="addTheme(index)" href="#">{{ group.name }}</a>
+                                <li v-for="(picture, index) in pictureCases" class="list-group-item">
+                                    <a class="dropdown-item" @click="setPicture(picture)" >{{ picture.name }}</a>
                                 </li>
                             </ul>
                         </div>
                         <div class="btn-group w-auto mb-3" role="group" aria-label="Basic example">
                             <button @click="setPictureCount(-1)" type="button" class="btn btn-secondary">-</button>
-                            <button @click="setPictureCount(1)" type="button" class="btn btn-primary">{{  pictures.count }} эл</button>
+                            <button @click="setPictureCount(1)" type="button" class="btn btn-primary">{{  style.pictureCount }} эл</button>
                             <button @click="setPictureCount(1)" type="button" class="btn btn-secondary">+</button>
                         </div>
                         <h5>Найстройте вероятность добавления случайного <b>изображения</b> в пост. Отредактируйте настройки. <b>Нажмите</b> на + для добавления нескольких картинок.</h5>
@@ -151,8 +141,16 @@
                         <h5><b>Выберите переодичность.</b> Выходы постов зависят от дня недели. Оставьте кнопку серой, если хотите пропустить день.</h5>
                     </div>
                 </div><hr>
+                <div class="row d-flex justify-content-center align-items-center mb-3">
+                    <div class="d-flex justify-content-center  col-lg-6">
+                        <h5><b>Вставьте ссылку на источник.</b> Если указать источник, то под каждым постом будет добавлена ссылка.</h5>
+                    </div>
+                    <div class="col-4">
+                        <input v-model="urlSource" class="form-control form-control-lg" type="text" placeholder="https://www.vk.com/thismood">
+                    </div>
+                </div><hr>
                 <div class="row d-flex justify-content-center">
-                    <button @click="savePostTime()" type="button" class="btn btn-primary col-3">Сохранить</button>
+                    <button @click="savePostTime()" type="button" class="btn btn-primary col-3">Сохранить пост</button>
                 </div>
             </div>
         </div>
@@ -164,146 +162,162 @@ import Vue from 'vue'
 import VueCircleSlider from 'vue-round-slider'
 
 import SetThemeName from './SetNameThemeComponent'
-
-    export default {
-        props: ['postTime'],
-        data:function(){
-            return{
-                weak: {
-                    Mon: true,
-                    Tue: true,
-                    Wed: true,
-                    Thu: true,
-                    Fri: true,
-                    Sat: true,
-                    Sun: true,
-                },
-                setting: {
-                    textProbability: 50,
-                    pictureProbability: 100,
-                    audioProbability: 50,
-                    textSmile: false,
-                    textRepeat: true,
-                    audioRepeat: true,
-                },
-                texts: {
-                    textId: null,
-                    count: 1,
-                },
-                audios: {
-                    audioId: null,
-                    count: 1,
-                },
-                pictures: {
-                    pictureId: null,
-                    count: 3,
-                },
-                themeId: -1,
-                saveTheme: -1,
-                groupInfo: "Выберите группу",
-                textInfo: "Выберите набор текстов",
-                audioInfo: "Выберите набор аудиозаписей",
-                pictureInfo: "Выберите источник изображения",
-                time: 13,
-                groups: [],
-                themes: [],
-            }
-        },
-        components: {
-            SetThemeName,
-        },
-        mounted() {
-            this.update();
-            this.getAllGroup();
-        },
-        methods: {
-            setAudioCount(val){
-                if((this.audios.count < 5 || val < 0) && (this.audios.count > 1 || val > 0)){
-                    this.audios.count += val;
-                }
+export default {
+    data:function(){
+        return{
+            textInfo: "Выберите набор текстов",
+            audioInfo: "Выберите набор аудиозаписей",
+            pictureInfo: "Выберите источник изображения",
+            weak: {
+                Mon: true,
+                Tue: true,
+                Wed: true,
+                Thu: true,
+                Fri: true,
+                Sat: true,
+                Sun: true,
             },
-            setPictureCount(val){
-                if((this.pictures.count < 5 || val < 0) && (this.pictures.count > 1 || val > 0)){
-                    this.pictures.count += val;
-                }
+            setting: {
+                textProbability: 50,
+                audioProbability: 50,
+                pictureProbability: 100,
+                textSmile: false,
+                textRepeat: true,
+                audioRepeat: true,
             },
-            setGroup(id){
-                this.$emit('updateTimeList', {
-                    groupid: this.groups[id].id,
-                })
-                console.log(this.groups[id].name)
+            style: {
+                text_style_id: null,
+                audio_style_id: null,
+                picture_style_id: null,
+                textCount: 1,
+                audioCount: 1,
+                pictureCount: 3,
             },
-            setTextSmile: function() {
-                this.setting.textSmile = !this.setting.textSmile;
-            },
-            setTextRepeat: function() {
-                this.setting.textRepeat = !this.setting.textRepeat;
-            },
-            setAudioRepeat: function() {
-                this.setting.audioRepeat = !this.setting.audioRepeat;
-            },
-            update: function() {
-                axios.post('/show-all-post').then((response) => {
-                    this.posts = response.data;
-                });
-            },
-            setWeak(id){
-                if(id === 0) {
-                    this.weak.Mon = !this.weak.Mon;
-                }
-                if(id === 1) {
-                    this.weak.Tue = !this.weak.Tue;
-                }
-                if(id === 2) {
-                    this.weak.Wed = !this.weak.Wed;
-                }
-                if(id === 3) {
-                    this.weak.Thu = !this.weak.Thu;
-                }
-                if(id === 4) {
-                    this.weak.Fri = !this.weak.Fri;
-                }
-                if(id === 5) {
-                    this.weak.Sat = !this.weak.Sat;
-                }
-                if(id === 6) {
-                    this.weak.Sun = !this.weak.Sun;
-                }
-            },
-            getAllGroup: function() {
-                axios.post('/show-all-group').then((response) => {
-                    this.groups = response.data;
-                });
-
-            },
-            tooltipFormatter(e) {
-                return `${e.value}:00`;
-            },
-            percentFormatter(e) {
-                if (e.value === 100) {
-                    return "Всега";
-                }
-                return `${e.value}%`;
-            },
-            savePostTime: function() {
-                let groupList = [];
-                for (let i = 0; i < this.groups.length; i++) {
-                    if(this.groups[i].info === true){
-                        groupList[i] = this.groups[i].id;
-                    }
-                }
-                console.log(groupList)
+            time: 13,
+            urlSource: null,
+            textCases: [],
+            audioCases: [],
+            pictureCases: [],
+            postCase: false,
+            groupInfo: [],
+        }
+    },
+    components: {
+        SetThemeName,
+    },
+    mounted() {
+        this.loadTexts();
+        this.loadAudios();
+        this.loadPictures();
+    },
+    methods: {
+        savePostTime: function() {
+            if(!this.postCase){
                 axios.post('/add-post', {
-                    groups:  groupList,
-                    themeId:    this.saveTheme,
+                    setting:  this.setting,
+                    style:    this.style,
                     time:  this.time,
                     weak: this.weak,
+                    urlSource: this.urlSource,
+                    groupInfo: this.groupInfo,
                 }).then((response) => {
-                    this.posts = response.data;
-                    this.$emit("update")
-                    console.log(this.posts)
+                    //this.posts = response.data;
+                    console.log(response)
                 });
-            },
-        }
+            }
+            this.$emit("updateTimeList")
+            // this.$emit('updateTimeList', {
+            //     groupid: this.groups[id].id,
+            // })
+            // this.groupInfo = this.groups[id].name;
+        },
+        loadTexts: function() {
+            axios.get('/show-text').then((response) => {
+                this.textCases = response.data;
+            });
+        },
+        loadAudios: function() {
+            axios.get('/show-audio').then((response) => {
+                this.audioCases = response.data;
+            });
+        },
+        loadPictures: function() {
+            axios.get('/show-picture').then((response) => {
+                this.pictureCases = response.data;
+            });
+        },
+        setText(text) {
+            this.textInfo = text.name;
+            this.style.text_style_id = text.id;
+        },
+        setAudio(audio) {
+            this.audioInfo = audio.name;
+            this.style.audio_style_id = audio.id;
+        },
+        setPicture(picture) {
+            this.pictureInfo = picture.name;
+            this.style.picture_style_id = picture.id;
+        },
+
+        setAudioCount(val){
+            if((this.style.audioCount < 5 || val < 0) && (this.style.audioCount > 1 || val > 0)){
+                this.style.audioCount += val;
+            }
+        },
+        setPictureCount(val){
+            if((this.style.pictureCount < 5 || val < 0) && (this.style.pictureCount > 1 || val > 0)){
+                this.style.pictureCount += val;
+            }
+        },
+        setSettingGroup(group){ //отправляется с родительского
+            this.groupInfo = group;
+        },
+        editPostTime(post){ //отправляется с родительского
+            this.time = post.time;
+            this.postCase = post;
+        },
+
+        setTextSmile: function() {
+            this.setting.textSmile = !this.setting.textSmile;
+        },
+        setTextRepeat: function() {
+            this.setting.textRepeat = !this.setting.textRepeat;
+        },
+        setAudioRepeat: function() {
+            this.setting.audioRepeat = !this.setting.audioRepeat;
+        },
+        setWeak(id){
+            if(id === 0) {
+                this.weak.Mon = !this.weak.Mon;
+            }
+            if(id === 1) {
+                this.weak.Tue = !this.weak.Tue;
+            }
+            if(id === 2) {
+                this.weak.Wed = !this.weak.Wed;
+            }
+            if(id === 3) {
+                this.weak.Thu = !this.weak.Thu;
+            }
+            if(id === 4) {
+                this.weak.Fri = !this.weak.Fri;
+            }
+            if(id === 5) {
+                this.weak.Sat = !this.weak.Sat;
+            }
+            if(id === 6) {
+                this.weak.Sun = !this.weak.Sun;
+            }
+        },
+        tooltipFormatter(e) {
+            return `${e.value}:00`;
+        },
+        percentFormatter(e) {
+            if (e.value === 100) {
+                return "Всега";
+            }
+            return `${e.value}%`;
+        },
     }
+}
 </script>
