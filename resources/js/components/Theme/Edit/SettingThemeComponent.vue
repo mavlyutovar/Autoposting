@@ -194,7 +194,7 @@ export default {
                 pictureCount: 3,
             },
             time: 13,
-            urlSource: null,
+            urlSource: "",
             textCases: [],
             audioCases: [],
             pictureCases: [],

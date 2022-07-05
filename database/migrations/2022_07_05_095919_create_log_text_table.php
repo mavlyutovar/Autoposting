@@ -15,7 +15,7 @@ class CreateLogTextTable extends Migration
     {
         Schema::create('log_text', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('theme_id')->nullable();
+            $table->integer('group_id')->nullable();
             $table->string('value')->nullable();
             $table->timestamps();
         });

@@ -5,7 +5,16 @@ namespace App;
 use App\Api\PinterestApi;
 use App\Api\VKApi;
 use App\Group;
+use App\ThemeLogs\LogAudio;
+use App\ThemeLogs\LogPicture;
+use App\ThemeLogs\LogText;
+use App\ThemeModels\Audio;
+use App\ThemeModels\Picture;
+use App\ThemeModels\StyleAudio;
+use App\ThemeModels\Text;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Database\Eloquent\Model;
+use mysql_xdevapi\Exception;
 
 class Theme extends Model
 {
@@ -25,120 +34,196 @@ class Theme extends Model
     }
 
     public function sendPost(){
+        set_time_limit(3600);
         $settings   = json_decode($this->setting);
-
-        $audioLoad          = true;
-        $audio              = "";
-        if($this->probabilityMedia($settings->audioProbability)) {
-            $url_audio_board    = json_decode($this->url_audio_board);
-            if(isset($url_audio_board->audioId)) {
-
-                $audios  = (array)$url_audio_board->audioId;
-                shuffle($audios);
-                $getDay = intval(date("d"));
-                $randomtrack = rand(0, $getDay);
-                if(isset($audios[$randomtrack])){
-                    $this->vk->attachments[] = $audios[$randomtrack];
-                    $audio  = $audios[$randomtrack];
-                }
-                else {
-                    if(isset($audios[0])) {
-                        $this->vk->attachments[] = $audios[0];
-                        $audio  = $audios[0];
-                    }
-                }
-            }
-            if(isset($url_audio_board->rndAudio)) {
-                if($url_audio_board->rndAudio) {
-                    $audio  = $this->vk->wallAddThismoodAudio();
-                }
-            }
+        //{"textProbability":50,"audioProbability":50,"pictureProbability":100,"textSmile":true,"textRepeat":true,"audioRepeat":false}
+        $style      = json_decode($this->style);
+        //{"text_style_id":1,"audio_style_id":1,"picture_style_id":1,"textCount":1,"audioCount":2,"pictureCount":5}
+        $url_source = $this->url_source;
+        $groupid    = $this->group->id;
+        $getDay     = intval(date("d"));
+        $getDay     += (int)date("H");
+        if ($getDay > 31) {
+            $getDay = $getDay - 31;
         }
 
         $textLoad           = null;
         $text               = "";
         if($this->probabilityMedia($settings->textProbability)) {
-            $texts  = json_decode($this->text);
-            if(isset($texts->text)) {
-                if(isset($texts->rndText)) {
-                    if($texts->rndText) {
-                        $text     = " ".$this->getEmoji();
-                        $textLoad = true;
+            $texts  = Text::where('style_id', $style->text_style_id)->get() ?? null;
+            if(isset($texts)) {
+                if(!$settings->textRepeat) {
+                    foreach ($texts as $id => $message){
+                        $logText  = LogText::where('group_id', $this->id)
+                                ->where('value', $message->text_value)->get() ?? null;
+
+                        foreach ($logText as $log){
+                            if($message->text_value == $log->value) {
+                                if(sizeof($texts) >= 1){
+                                    unset($texts[$id]);
+                                }
+                            }
+                        }
                     }
                 }
-                $texts      = $this->equalWithLogs($texts->text);
-                if(isset($texts[0])) {
-                    $text     = $texts[0].$text;
+                if(sizeof($texts) > 0){
+                    $todayText  = $this->arrayToMonth($texts);
+
+                    $text       = $todayText[$getDay]->string_value;
+                    if($settings->textSmile) {
+                        $text   = $text." ".$this->getEmoji();
+                    }
+                    if(isset($text)) {
+                        $newLogText             = new LogText();
+                        $newLogText->value      = $text;
+                        $newLogText->group_id   = $groupid;
+                        $newLogText->save();
+                    }
                     $textLoad = true;
+                    $getDay += 1;
+                    if ($getDay > 31) {
+                        $getDay = $getDay - 31;
+                    }
                 }
             }
         }
 
 
-        $url_pic_board  = $this->url_picture_board;
         $pictureLoad    = false;
         if($this->probabilityMedia($settings->pictureProbability)) {
-            if(isset($url_pic_board))
-            {
-                if(strpos($url_pic_board, "pinterest.") !== false){
-                    $pins = $this->pinterest->getImagesFromBoard($url_pic_board);
-                    $pins = $this->equalWithLogs($pins);
-                    if(isset($pins[0])) {
-                        $this->newPostLog->pic_value = $pins[0];
-                        $url = $this->pinterest->getUrlFromPinImage($pins[0]);
-                        $this->vk->wallAddPhoto($url);
-                        $pictureLoad = true;
+            $pictures     = Picture::where('style_id', $style->picture_style_id)->get() ?? null;
+            if(isset($pictures)) {
+                $pictureCount   = $style->pictureCount;
+                $todayPicture   = $this->arrayToMonth($pictures);
+
+
+                while($pictureCount >= 1){
+                    $savePicture = null;
+                    $pic_value = $todayPicture[$getDay]->picture_value;
+                    if(strpos($pic_value, "pinterest.") !== false){
+                        $pins = $this->pinterest->getImagesFromBoard($pic_value);
+                        $pins = $this->equalWithPicLogs($pins);
+                        shuffle($pins);
+                        $todayPins = $this->arrayToMonth($pins);
+                        $savePicture = $todayPins[$getDay];
+                        if(isset($savePicture)) {
+                            $url = $this->pinterest->getUrlFromPinImage($savePicture);
+                            $this->vk->wallAddPhoto($url);
+                        }
+
+                    }
+                    else {
+                        $photos = $this->vk->getPhotosFromPub($pic_value);
+                        $photos = $this->equalWithPicLogs($photos);
+                        shuffle($photos);
+                        $todayPhotos = $this->arrayToMonth($photos);
+                        $savePicture = $todayPhotos[$getDay];
+                        if(isset($savePicture)) {
+                            $this->vk->wallAddPhotoFromPub($savePicture);
+                        }
+                    }
+                    sleep(1);
+                    if(isset($savePicture)) {
+                        $newLogPicture              = new LogPicture();
+                        $newLogPicture->value       = $savePicture;
+                        $newLogPicture->group_id    = $groupid;
+                        $newLogPicture->save();
+                    }
+
+                    $getDay += 5;
+                    if($getDay > 31) {
+                        $getDay = $getDay-31;
+                    }
+                    $pictureCount--;
+                }
+                $pictureLoad = true;
+            }
+        }
+
+        $audioLoad          = true;
+        if($this->probabilityMedia($settings->audioProbability)) {
+            $audios     = Audio::where('style_id', $style->audio_style_id)->get() ?? null;
+            if(isset($audios)) {
+                if(!$settings->audioRepeat) {
+                    foreach ($audios as $id => $track){
+                        $logAudio  = LogAudio::where('group_id', $this->id)
+                                ->where('value', $track->audio_value)->get() ?? null;
+
+                        foreach ($logAudio as $log){
+                            if($track->audio_value == $log->value) {
+                                if(sizeof($audios) >= 1){
+                                    unset($audios[$id]);
+                                }
+                            }
+                        }
                     }
                 }
-                else {
-                    $photos = $this->vk->getPhotosFromPub($url_pic_board);
-                    $photos = $this->equalWithLogs($photos);
-                    if(isset($photos[0])) {
-                        $this->newPostLog->pic_value = $photos[0];
-                        $this->vk->wallAddPhotoFromPub($photos[0]);
-                        $pictureLoad = true;
+                if(sizeof($audios) > 0) {
+                    $audioCount = $style->audioCount;
+                    if(sizeof($audios) < $audioCount){
+                        $audioCount = sizeof($audios);
+                    }
+                    $todayAudio = $this->arrayToMonth($audios);
+
+                    $countAudio = 0;
+                    while ($audioCount >= 1) {
+                        $audio = $todayAudio[$getDay]->audio_value;
+                        $this->vk->attachments[] = $audio;
+                        if (isset($audio)) {
+                            $newLogAudio = new LogAudio();
+                            $newLogAudio->value = $audio;
+                            $newLogAudio->group_id = $groupid;
+                            $newLogAudio->save();
+                        }
+
+                        $getDay += 5;
+                        if ($getDay > 31) {
+                            $getDay = $getDay - 31;
+                        }
+                        $audioCount--;
+                        $countAudio++;
+                        if($countAudio > sizeof($audios)){
+                            break;
+                        }
                     }
                 }
             }
         }
 
+        $response = "error 53887";
         if(isset($pictureLoad) || isset($audioLoad) || isset($textLoad)) {
-            $publishTime    = time()+(rand(1, 1200)+rand(1, 600));
+            $publishTime    = time()+(rand(1, 1200)+rand(1, 600))+3600;// +3600 пост появляется за час в отложенных записях
 
-            $this->newPostLog->text_value   = $text;
-            $this->newPostLog->group_id     = $this->group->id;
+            $this->newPostLog->group_id     = $groupid;
             $this->newPostLog->theme_id     = $this->id;
-            $this->newPostLog->audio_value  = $audio;
             $params = [
                 'from_group'    => 1,
                 'message'       => $text,
                 'publish_date'  => $publishTime,
+                'copyright'     => "https://vk.com/thismood?w=wall-195291116_785",//$url_source,
             ];
             $response = $this->vk->wallSendPost($params);
             $this->newPostLog->response = json_encode($response);
             $this->newPostLog->save();
-            return $response;
         }
-
-
+        return $response;
     }
 
-    public function equalWithLogs(array $items = []) {
-        $postLogs = PostLog::where('group_id', $this->group->id)->get();
-        foreach ($postLogs as $log) {
-            foreach ($items as $key => $value) {
-                if($log->pic_value == $value
-                    || $log->audio_value == $value
-                    || $log->text_value == $value) {
-                    if(sizeof($items) > 1){
-                        unset($items[$key]);
+    public function equalWithPicLogs(array $pictures = []) {
+        foreach ($pictures as $id => $img){
+            $logPicture  = LogPicture::where('group_id', $this->id)
+                    ->where('value', $img)->get() ?? null;
+
+            foreach ($logPicture as $log){
+                if($img == $log->value) {
+                    if(sizeof($pictures) > 1){
+                        unset($pictures[$id]);
                     }
-                    else break;
                 }
+                else break;
             }
         }
-        shuffle($items);
-        return $items;
+        return $pictures;
     }
 
     public function probabilityMedia($percent = 0) {
@@ -147,6 +232,32 @@ class Theme extends Model
             return true;
         }
         return false;
+    }
+
+    public function arrayToMonth($array = null) {
+        $days   = 31;
+        $month  = [];
+        $id     = 0;
+        $buffer = [];
+        foreach ($array as $item){
+            $buffer[$id] = $item;
+
+            $id++;
+            if($id > sizeof($array)){
+                break;
+            }
+        }
+        $id = 0;
+        while($days >= 0){
+            $month[$days] = $buffer[$id];
+
+            $id++;
+            if($id >= sizeof($buffer)) {
+                $id = 0;
+            }
+            $days--;
+        }
+        return $month;
     }
 
     public function getEmoji()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Api\PinterestApi;
 use App\Group;
+use App\Http\Resources\PostTimeResource;
 use App\PostTime;
 use App\Theme;
 use Illuminate\Http\Request;
@@ -89,8 +90,7 @@ class PostTimeController extends Controller
 
     public function sendPostTime(Request $request, $id) {
         $postTime = PostTime::find($id);
-        $postTime->sendPost();
-        return "";
+        return $postTime->sendPost();
     }
 
     public function getPostTimes($group_id = null)

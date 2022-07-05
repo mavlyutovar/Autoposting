@@ -42,9 +42,9 @@ class HourlyCheckPost extends Command
     public function handle()
     {
         set_time_limit(0);
-        $nowTime = date("H")+5;
+        $nowTime = date("H")+4;
         Log::info($nowTime);
-        $postTimes = PostTime::where("time", $nowTime)->get();
+        $postTimes = PostTime::where("time", $nowTime)->where("status", "run")->get();
         Log::info("Количество тем: ".sizeof($postTimes));
         foreach ($postTimes as $generatePost) {
             Log::info("posttime ((".$generatePost->id);
