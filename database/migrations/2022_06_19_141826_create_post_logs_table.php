@@ -17,9 +17,7 @@ class CreatePostLogsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('theme_id');
             $table->integer('group_id');
-            $table->string('pic_value');
-            $table->string('audio_value');
-            $table->string('text_value');
+            $table->string('response');
             $table->timestamps();
         });
     }

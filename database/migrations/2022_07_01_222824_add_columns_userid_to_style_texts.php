@@ -13,7 +13,7 @@ class AddColumnsUseridToStyleTexts extends Migration
      */
     public function up()
     {
-        Schema::table('style_texts', function (Blueprint $table) {
+        Schema::table('style_text', function (Blueprint $table) {
             $table->integer('userid');
         });
     }
@@ -25,7 +25,7 @@ class AddColumnsUseridToStyleTexts extends Migration
      */
     public function down()
     {
-        Schema::table('style_texts', function (Blueprint $table) {
+        Schema::table('style_text', function (Blueprint $table) {
             $table->dropColumn('userid');
         });
     }

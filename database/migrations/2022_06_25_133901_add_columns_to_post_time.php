@@ -15,7 +15,7 @@ class AddColumnsToPostTime extends Migration
     {
         Schema::table('post_times', function (Blueprint $table) {
             $table->integer('userid');
-            $table->json('weak');
+            $table->string('weak');
         });
     }
 

@@ -13,7 +13,7 @@ class CreateStyleTextTable extends Migration
      */
     public function up()
     {
-        Schema::create('style_texts', function (Blueprint $table) {
+        Schema::create('style_text', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name')->comment('наименование группы текстов');
             $table->timestamps();

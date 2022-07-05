@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnResponseToPostLogs extends Migration
+class UpdatePostTimeTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnResponseToPostLogs extends Migration
      */
     public function up()
     {
-        Schema::table('post_logs', function (Blueprint $table) {
-            $table->json('response');
+        Schema::table('post_times', function (Blueprint $table) {
+            $table->string('status')->default('run');
         });
     }
 
@@ -25,8 +25,8 @@ class AddColumnResponseToPostLogs extends Migration
      */
     public function down()
     {
-        Schema::table('post_logs', function (Blueprint $table) {
-            $table->dropColumn('response');
+        Schema::table('post_times', function (Blueprint $table) {
+            $table->dropColumn('status');
         });
     }
 }
