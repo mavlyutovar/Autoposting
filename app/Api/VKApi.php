@@ -100,6 +100,9 @@ class VKApi extends Model
         $posts = $this->api->request('wall.get', $params, $this->token);
         if(isset($posts['response']['items'])) {
             foreach ($posts['response']['items'] as $post) {
+                if(isset($post['copyright'])) {
+                    continue;
+                }
                 if(isset($post['attachments']) && $post['marked_as_ads'] == 0) {
                     foreach ($post['attachments'] as $item) {
                         if(isset($item['photo'])) {
@@ -110,72 +113,5 @@ class VKApi extends Model
             }
         }
         return $this->photos;
-    }
-
-    public function wallAddThismoodAudio() {
-        $audio = [//Thismood
-            "audio-2001177523_68177523",//Eye Contact
-            "audio-2001400437_75400437",//Flame
-            "audio-2001869873_75869873",//Aqua
-            "audio-2001333561_71333561",//In Heart
-            "audio-2001852175_88852175",//See
-            "audio-2001319977_77319977",//Floating Fish
-            "audio-2001583673_71583673",//Universe
-            "audio-2001528437_69528437",//To Ride
-            "audio-2001351149_108351149",//Show
-            "audio-2001192942_68192942",//Day
-            "audio-2001192804_68192804",//Night
-            "audio-2001097150_83097150",//Inside Me
-            "audio-2001528775_69528775",//Will Tell Us
-            "audio-2001271402_102271402",//Jaguar
-            "audio-2001517124_88517124",//Horses
-            "audio-2001413753_83413753",//Cyber Heart
-            "audio-2001688590_93688590",//Wings
-            "audio-2001343810_71343810",//Forever
-            "audio-2001528776_69528776",//Spaceman
-            "audio-2001192968_68192968",//Sunrise
-            "audio-2001606920_84606920",//Urban
-            "audio-2001260841_77260841",//Medusa Dance
-            "audio-2001095242_88095242",//In The Sky
-            "audio-2001615773_75615773",//Elements
-            "audio-2001626994_94626994",//Feel Love
-            "audio-2001754700_94754700",//Soul
-            "audio-2001388463_103388463",//Snake
-            "audio-2001320081_77320081",//Crystal Castle
-            "audio-2001938440_107938440",//For Magic
-            "audio-2001409831_100409831",//Eagle
-            "audio-2001177523_68177523",//Eye Contact
-            "audio-2001400437_75400437",//Flame
-            "audio-2001869873_75869873",//Aqua
-            "audio-2001333561_71333561",//In Heart
-        ];
-        $gr = array(19, 31, 69, 81, 38, 62);
-        $r = rand(0,100);
-        if(in_array($r, $gr)){//В случайных порядках будет создаваться пост с тремя аудиозаписями
-            $today = getdate();
-            $music = $audio[$today["mday"]].", ";
-            foreach($audio as $key => $trackId) {
-                if($audio[$today["mday"]] == $trackId){
-                    if($today["mday"] != $key)
-                    {
-                        unset($audio[$key]);
-                    }
-                }
-            }
-            unset($audio[$today["mday"]]);
-
-            while(count($audio) > 2) {
-                unset($audio[array_rand($audio)]);
-                shuffle($audio);
-            }
-            $this->attachments[] = $music . $audio[0].", ".$audio[1];
-            return $music . $audio[0].", ".$audio[1];
-
-        }
-        else {//Или обычный пост с 1 треком
-            $a = $audio[array_rand($audio)];
-            $this->attachments[] = $a;
-            return $a;
-        }
     }
 }
