@@ -24,6 +24,7 @@ class ThemeController extends Controller
         $userid = Auth::id();
         $styles = StyleAudio::where("userid", $userid)->get();
         foreach ($styles as $style) {
+            $case           = [];
             $case['id']     = $style->id;
             $case['name']   = $style->name;
             $audios = Audio::where("style_id", $style->id)->get();
@@ -104,6 +105,7 @@ class ThemeController extends Controller
         $userid = Auth::id();
         $styles = StyleText::where("userid", $userid)->get();
         foreach ($styles as $style) {
+            $case           = [];
             $case['id']     = $style->id;
             $case['name']   = $style->name;
             $texts = Text::where("style_id", $style->id)->get();
@@ -185,6 +187,7 @@ class ThemeController extends Controller
         $userid = Auth::id();
         $styles = StylePicture::where("userid", $userid)->get();
         foreach ($styles as $style) {
+            $case           = [];
             $case['id']     = $style->id;
             $case['name']   = $style->name;
             $texts = Picture::where("style_id", $style->id)->get();

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-7 col-lg-7">
             <div class="card mb-4" style="margin: auto;">
-                <div class="card-header">Добавление набора текстов</div>
+                <div class="card-header">Добавление набора текстов ({{listTexts.length}} эл)</div>
                 <div class="card-body">
                     <input v-model="texts.name" class="form-control form-control-lg mb-3" type="text" placeholder="Обобщенное название набора">
                     <h6 class="mb-3">Перед сохранением набора добавьте не меньше 31 сообщения.</h6>
@@ -16,7 +16,6 @@
                     </div>
 
                     <li v-for="(item, index) in listTexts" class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="text-dark">{{index}}</span>
                         <span class="mr-auto p-2">{{ item }}</span>
                         <button @click="del(index)" type="button" class="btn btn-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
@@ -138,13 +137,13 @@ export default {
                         items: [],
                     };
                     this.cases = response.data;
-                    //console.log(this.cases);
                 });
             }
         },
         update: function() {
             axios.get('/show-text').then((response) => {
                 this.cases = response.data;
+                console.log(this.cases)
             });
         },
         updatePercent() {

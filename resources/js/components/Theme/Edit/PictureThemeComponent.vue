@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-7 col-lg-7">
             <div class="card mb-4" style="margin: auto;">
-                <div class="card-header">Добавление набора картинок</div>
+                <div class="card-header">Добавление набора картинок ({{listPictures.length}} эл)</div>
                 <div class="card-body">
                     <input v-model="pictures.name" class="form-control form-control-lg mb-3" type="text" placeholder="Обобщенное название набора">
                     <h6 class="mb-3">Перед сохранением набора добавьте не больше 5 источников для изображений.</h6>
@@ -10,13 +10,12 @@
                         <button @click="saveCase()" data-toggle="tooltip" data-placement="left" title="Добавьте ссылку" type="submit" class="justify-content-end btn btn-success">Сохранить набор</button>
                     </div>
                     <h6 class="mb-3">Вставьте ссылку на <a href="https://www.pinterest.ru/kdnamehere/thismood-picture/">https://www.pinterest.ru/</a> или на группу <a href="https://www.vk.com/thismood">https://www.vk.com/</a>, затем нажмите Добавить.</h6>
-                    <input v-model="pictureAdd" class="form-control form-control-lg mb-3" type="text" placeholder="Обобщенное название набора">
+                    <input v-model="pictureAdd" class="form-control form-control-lg mb-3" type="text" placeholder="Введите id группы">
                     <div class="d-flex justify-content-around align-items-center mt-3 mb-3">
-                        <button @click="add()" data-toggle="tooltip" data-placement="left" title="Добавьте несколько сообщений одной тематики" type="submit" class="justify-content-end btn btn-primary">Добавить аудиозапись</button>
+                        <button @click="add()" data-toggle="tooltip" data-placement="left" title="Добавьте несколько сообщений одной тематики" type="submit" class="justify-content-end btn btn-primary">Добавить источник</button>
                     </div>
 
                     <li v-for="(item, index) in listPictures" class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="text-dark">{{index}}</span>
                         <span class="mr-auto p-2">{{ item }}</span>
                         <button @click="del(index)" type="button" class="btn btn-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-7 col-lg-7">
             <div class="card mb-4" style="margin: auto;">
-                <div class="card-header">Добавление набора аудиозаписей</div>
+                <div class="card-header">Добавление набора аудиозаписей ({{listAudios.length}} эл)</div>
                 <div class="card-body">
                     <input v-model="audios.name" class="form-control form-control-lg mb-3" type="text" placeholder="Обобщенное название набора">
                     <h6 class="mb-3">Перед сохранением набора добавьте не меньше 31 аудиозаписи.</h6>
@@ -10,13 +10,12 @@
                         <button @click="saveCase()" data-toggle="tooltip" data-placement="left" title="Добавьте ссылку" type="submit" class="justify-content-end btn btn-success">Сохранить набор</button>
                     </div>
                     <h6 class="mb-3">Вставьте ссылку и нажмите Добавить. Поддерживается только музыка из Вконтакте. Вставьте ссылку на трек, который заканчивается так: <b>audio-2001177523_68177523</b></h6>
-                    <input v-model="audioAdd" class="form-control form-control-lg mb-3" type="text" placeholder="Обобщенное название набора">
+                    <input v-model="audioAdd" class="form-control form-control-lg mb-3" type="text" placeholder="Вставьте ссылку на аудиозапись">
                     <div class="d-flex justify-content-around align-items-center mt-3 mb-3">
                         <button @click="add()" data-toggle="tooltip" data-placement="left" title="Добавьте несколько сообщений одной тематики" type="submit" class="justify-content-end btn btn-primary">Добавить аудиозапись</button>
                     </div>
 
                     <li v-for="(item, index) in listAudios" class="list-group-item d-flex justify-content-between align-items-center">
-                        <span class="text-dark">{{index}}</span>
                         <span class="mr-auto p-2">{{ item }}</span>
                         <button @click="del(index)" type="button" class="btn btn-warning">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">

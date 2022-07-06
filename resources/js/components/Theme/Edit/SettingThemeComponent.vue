@@ -92,10 +92,10 @@
                         <button class="btn w-75 btn-success dropdown-toggle mb-3" type="button" id="picturesMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             {{pictureInfo}}
                         </button>
-                        <div class="dropdown-menu  w-50" aria-labelledby="picturesMenuButton">
+                        <div class="dropdown-menu  w-100" aria-labelledby="picturesMenuButton">
                             <ul class="list-group list-group-flush">
-                                <li v-for="(picture, index) in pictureCases" class="list-group-item">
-                                    <a class="dropdown-item" @click="setPicture(picture)" >{{ picture.name }}</a>
+                                <li v-for="(picture, index) in pictureCases" class="list-group-item ">
+                                    <a class="dropdown-item w-100 truncate" @click="setPicture(picture)" >{{ picture.name }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -128,13 +128,13 @@
                 <div class="row d-flex justify-content-center align-items-center mb-3">
                     <div class="d-flex justify-content-center  col-4">
                         <div class="btn-group" role="group" aria-label="Basic example">
-                            <button @click="setWeak(0)" type="button" v-bind:class="{'btn btn-secondary': !weak.Mon,  'btn btn-success': weak.Mon}">ПН</button>
-                            <button @click="setWeak(1)" type="button" v-bind:class="{'btn btn-secondary': !weak.Tue,  'btn btn-success': weak.Tue}">ВТ</button>
-                            <button @click="setWeak(2)" type="button" v-bind:class="{'btn btn-secondary': !weak.Wed,  'btn btn-success': weak.Wed}">СР</button>
-                            <button @click="setWeak(3)" type="button" v-bind:class="{'btn btn-secondary': !weak.Thu,  'btn btn-success': weak.Thu}">ЧТ</button>
-                            <button @click="setWeak(4)" type="button" v-bind:class="{'btn btn-secondary': !weak.Fri,  'btn btn-success': weak.Fri}">ПТ</button>
-                            <button @click="setWeak(5)" type="button" v-bind:class="{'btn btn-secondary': !weak.Sat,  'btn btn-success': weak.Sat}">СБ</button>
-                            <button @click="setWeak(6)" type="button" v-bind:class="{'btn btn-secondary': !weak.Sun,  'btn btn-success': weak.Sun}">ВС</button>
+                            <button @click="setWeak(0)" type="button" :class="['btn', {'btn-secondary': !weak.Mon,  'btn btn-success': weak.Mon}]">ПН</button>
+                            <button @click="setWeak(1)" type="button" :class="['btn', {'btn-secondary': !weak.Tue,  'btn btn-success': weak.Tue}]">ВТ</button>
+                            <button @click="setWeak(2)" type="button" :class="['btn', {'btn-secondary': !weak.Wed,  'btn btn-success': weak.Wed}]">СР</button>
+                            <button @click="setWeak(3)" type="button" :class="['btn', {'btn-secondary': !weak.Thu,  'btn btn-success': weak.Thu}]">ЧТ</button>
+                            <button @click="setWeak(4)" type="button" :class="['btn', {'btn-secondary': !weak.Fri,  'btn btn-success': weak.Fri}]">ПТ</button>
+                            <button @click="setWeak(5)" type="button" :class="['btn', {'btn-secondary': !weak.Sat,  'btn btn-success': weak.Sat}]">СБ</button>
+                            <button @click="setWeak(6)" type="button" :class="['btn', {'btn-secondary': !weak.Sun,  'btn btn-success': weak.Sun}]">ВС</button>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -150,17 +150,32 @@
                     </div>
                 </div><hr>
                 <div class="row d-flex justify-content-center">
-                    <button @click="savePostTime()" type="button" class="btn btn-primary col-3">Сохранить пост</button>
+                    <a @click="savePostTime()" role="button" class="btn btn-primary col-3" href="#" >Сохранить пост</a>
                 </div>
+            </div>
+            <div class="card-footer">
+                <footer-menu></footer-menu>
             </div>
         </div>
     </div>
 </template>
 
+<style>
+.dropdown-item {
+    cursor: pointer;
+}
+.truncate {
+    white-space: nowrap; /* Текст не переносится */
+    overflow: hidden; /* Обрезаем всё за пределами блока */
+    text-overflow: ellipsis; /* Добавляем многоточие */
+}
+</style>
+
 <script>
 import Vue from 'vue'
 import VueCircleSlider from 'vue-round-slider'
 
+import FooterMenu from "/resources/js/components/FooterMenuComponent";
 import SetThemeName from './SetNameThemeComponent'
 export default {
     data:function(){
@@ -186,9 +201,9 @@ export default {
                 audioRepeat: true,
             },
             style: {
-                text_style_id: null,
-                audio_style_id: null,
-                picture_style_id: null,
+                text_style_id: false,
+                audio_style_id: false,
+                picture_style_id: false,
                 textCount: 1,
                 audioCount: 1,
                 pictureCount: 3,
@@ -199,10 +214,13 @@ export default {
             audioCases: [],
             pictureCases: [],
             postCase: false,
-            groupInfo: [],
+            groupInfo: {
+                name: false,
+            },
         }
     },
     components: {
+        FooterMenu,
         SetThemeName,
     },
     mounted() {
@@ -212,7 +230,11 @@ export default {
     },
     methods: {
         savePostTime: function() {
-            if(!this.postCase){
+            if(!this.postCase
+                && this.groupInfo.name
+                && this.style.text_style_id
+                && this.style.audio_style_id
+                && this.style.picture_style_id){
                 axios.post('/add-post', {
                     setting:  this.setting,
                     style:    this.style,
@@ -221,14 +243,16 @@ export default {
                     urlSource: this.urlSource,
                     groupInfo: this.groupInfo,
                 }).then((response) => {
-                    //this.posts = response.data;
-                    console.log(response)
+                    console.log(response.data)
+                    this.$emit('updateTimeList', {
+                        posts: response.data,
+                    })
                 });
+                console.log(this.groupInfo.id);
             }
-            this.$emit("updateTimeList")
-            // this.$emit('updateTimeList', {
-            //     groupid: this.groups[id].id,
-            // })
+            else {
+                alert("Установите группу и выберите наборы");
+            }
             // this.groupInfo = this.groups[id].name;
         },
         loadTexts: function() {
@@ -287,26 +311,28 @@ export default {
             this.setting.audioRepeat = !this.setting.audioRepeat;
         },
         setWeak(id){
-            if(id === 0) {
-                this.weak.Mon = !this.weak.Mon;
-            }
-            if(id === 1) {
-                this.weak.Tue = !this.weak.Tue;
-            }
-            if(id === 2) {
-                this.weak.Wed = !this.weak.Wed;
-            }
-            if(id === 3) {
-                this.weak.Thu = !this.weak.Thu;
-            }
-            if(id === 4) {
-                this.weak.Fri = !this.weak.Fri;
-            }
-            if(id === 5) {
-                this.weak.Sat = !this.weak.Sat;
-            }
-            if(id === 6) {
-                this.weak.Sun = !this.weak.Sun;
+            switch (id) {
+                case 0:
+                    this.weak.Mon = !this.weak.Mon;
+                    break;
+                case 1:
+                    this.weak.Tue = !this.weak.Tue;
+                    break;
+                case 2:
+                    this.weak.Wed = !this.weak.Wed;
+                    break;
+                case 3:
+                    this.weak.Thu = !this.weak.Thu;
+                    break;
+                case 4:
+                    this.weak.Fri = !this.weak.Fri;
+                    break;
+                case 5:
+                    this.weak.Sat = !this.weak.Sat;
+                    break;
+                case 6:
+                    this.weak.Sun = !this.weak.Sun;
+                    break;
             }
         },
         tooltipFormatter(e) {
@@ -314,7 +340,7 @@ export default {
         },
         percentFormatter(e) {
             if (e.value === 100) {
-                return "Всега";
+                return "Всегда";
             }
             return `${e.value}%`;
         },

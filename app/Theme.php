@@ -80,7 +80,7 @@ class Theme extends Model
                         $newLogText->save();
                     }
                     $textLoad = true;
-                    $getDay += 1;
+                    $getDay += rand(1,2);
                     if ($getDay > 31) {
                         $getDay = $getDay - 31;
                     }
@@ -103,7 +103,7 @@ class Theme extends Model
                     if(strpos($pic_value, "pinterest.") !== false){
                         $pins = $this->pinterest->getImagesFromBoard($pic_value);
                         $pins = $this->equalWithPicLogs($pins);
-                        shuffle($pins);
+                        //shuffle($pins);
                         $todayPins = $this->arrayToMonth($pins);
                         $savePicture = $todayPins[$getDay];
                         if(isset($savePicture)) {
@@ -115,14 +115,14 @@ class Theme extends Model
                     else {
                         $photos = $this->vk->getPhotosFromPub($pic_value);
                         $photos = $this->equalWithPicLogs($photos);
-                        shuffle($photos);
+                        //shuffle($photos);
                         $todayPhotos = $this->arrayToMonth($photos);
                         $savePicture = $todayPhotos[$getDay];
                         if(isset($savePicture)) {
                             $this->vk->wallAddPhotoFromPub($savePicture);
                         }
                     }
-                    sleep(1);
+                    sleep(2);
                     if(isset($savePicture)) {
                         $newLogPicture              = new LogPicture();
                         $newLogPicture->value       = $savePicture;
@@ -130,7 +130,7 @@ class Theme extends Model
                         $newLogPicture->save();
                     }
 
-                    $getDay += 5;
+                    $getDay += rand(7,8);
                     if($getDay > 31) {
                         $getDay = $getDay-31;
                     }
@@ -176,7 +176,7 @@ class Theme extends Model
                             $newLogAudio->save();
                         }
 
-                        $getDay += 5;
+                        $getDay += rand(1,2);
                         if ($getDay > 31) {
                             $getDay = $getDay - 31;
                         }
@@ -200,7 +200,7 @@ class Theme extends Model
                 'from_group'    => 1,
                 'message'       => $text,
                 'publish_date'  => $publishTime,
-                'copyright'     => "https://vk.com/thismood?w=wall-195291116_785",//$url_source,
+                'copyright'     => $url_source,
             ];
             $response = $this->vk->wallSendPost($params);
             $this->newPostLog->response = json_encode($response);
@@ -211,7 +211,7 @@ class Theme extends Model
 
     public function equalWithPicLogs(array $pictures = []) {
         foreach ($pictures as $id => $img){
-            $logPicture  = LogPicture::where('group_id', $this->id)
+            $logPicture  = LogPicture::where('group_id', $this->group->id)
                     ->where('value', $img)->get() ?? null;
 
             foreach ($logPicture as $log){
