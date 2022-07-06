@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Api\PinterestApi;
-use App\Group;
-use App\Http\Resources\PostTimeResource;
 use App\PostTime;
 use App\Theme;
+use App\ThemeModels\StyleAudio;
+use App\ThemeModels\StylePicture;
+use App\ThemeModels\StyleText;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,7 +25,7 @@ class PostTimeController extends Controller
         $style      = $request->input('style') ?? null;
         $weak       = $request->input('weak') ?? [];
         $time       = $request->input('time') ?? 13;
-        $urlSource  = $request->input('urlSource') ?? 13;
+        $urlSource  = $request->input('urlSource') ?? "";
         $group      = $request->input('groupInfo') ?? null;
 
         $dayOk = false;
@@ -72,7 +72,6 @@ class PostTimeController extends Controller
         else {
             return ['error' => 'В запросе отсутствует setting'];
         }
-        return $this->getPostTimes();
     }
 
     public function showAllPostTime(Request $request, $group_id)
@@ -82,15 +81,28 @@ class PostTimeController extends Controller
 
     public function deletePostTime(Request $request, $id)
     {
+        $groupid = 0;
         if($id) {
-            PostTime::find($id)->delete();
+            $postTime   = PostTime::find($id);
+            $theme      = Theme::find($postTime->theme_id);
+            $groupid    = $postTime->group_id;
+            $postTime->delete();
+            $theme->delete();
         }
-        return $this->getPostTimes();
+        return $this->getPostTimes($groupid);
     }
 
     public function sendPostTime(Request $request, $id) {
         $postTime = PostTime::find($id);
         return $postTime->sendPost();
+    }
+
+    public function setStatus(Request $request, $id) {
+        $postTime   = PostTime::find($id);
+        $postTime->status = $request->input('status') ?? "run";
+        $groupid    = $postTime->group_id;
+        $postTime->save();
+        return $this->getPostTimes($groupid);
     }
 
     public function getPostTimes($group_id = null)
@@ -101,12 +113,28 @@ class PostTimeController extends Controller
         }
         $postTime = $postTime->orderBy('time', 'asc')->get();
         foreach ($postTime as $post){
-            $post->themeName = "-";
-            $post->groupName = "-";
-            $post->weak = json_decode($post->weak);
-            $theme = $post->getTheme();
+            $post->textCaseName     = "-";
+            $post->audioCaseName    = "-";
+            $post->audioCaseName    = "-";
+            $post->url_source       = "-";
+            $post->weak             = json_decode($post->weak);
+            $theme                  = $post->getTheme();
             if(isset($theme)){
-                $post->themeName = $theme->name;
+                //{"textProbability":50,"audioProbability":50,"pictureProbability":100,"textSmile":true,"textRepeat":true,"audioRepeat":false}
+                //{"text_style_id":1,"audio_style_id":1,"picture_style_id":1,"textCount":1,"audioCount":2,"pictureCount":5}
+                $settings   = json_decode($theme->setting);
+                $style      = json_decode($theme->style);
+
+                $getStyle   = StyleText::find($style->text_style_id);
+                $post->textCaseName     = $getStyle->name ?? "-";
+                $getStyle   = StyleAudio::find($style->audio_style_id);
+                $post->audioCaseName    = $getStyle->name ?? "-";
+                $getStyle   = StylePicture::find($style->picture_style_id);
+                $post->pictureCaseName  = $getStyle->name ?? "-";
+
+                $post->url_source       = $theme->url_source;
+                $post->settings         = $settings;
+                $post->style            = $style;
             }
             $group = $post->getGroup();
             if(isset($group)){

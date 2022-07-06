@@ -24,50 +24,67 @@
                     <ul class="list-group">
                         <li v-for="(post, index) in posts" class="list-group-item d-flex justify-content-between align-items-center">
                             <span class="text-dark mr-2">{{index+1}}</span>
-                            <div class="p-2 truncate col-7">
-                                Группа <b class="text-primary">{{ post.groupName }}</b><br>
-                                Стиль для группы <b class="text-dark">{{ post.themeName }}</b><br>
-                                Время для поста <b class="text-dark">{{ post.time }}:00</b><br>
+                            <div class="p-2 truncate col-4">
+                                <h2 v-bind:class="{'text-dark': post.status === 'run',  'text-success': post.status === 'pause'}">
+                                    <button @click="changeStatus(post.id, 'run')" type="button" v-if="post.status === 'pause'" class="btn btn-dark">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16">
+                                            <path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"/>
+                                        </svg>
+                                    </button>
+                                    <button @click="changeStatus(post.id, 'pause')" type="button" v-if="post.status === 'run'" class="btn btn-success">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16">
+                                            <path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z"/>
+                                        </svg>
+                                    </button>
+                                    {{ post.time }}:00
+                                </h2>
+                                Набор текстов: <b class="text-primary">{{ post.textCaseName }}</b> <b v-if="post.settings.textSmile" class="text-dark">(🎲)</b><br>
+                                Набор аудиозаписей: <b class="text-dark">{{ post.audioCaseName }} ({{post.style.audioCount}} эл)</b><br>
+                                Набор изображений: <b class="text-dark">{{ post.pictureCaseName }} ({{post.style.pictureCount}} эл)</b><br>
+                            </div>
+                            <div class="p-2 truncate col-3">
+                                Вероятность текста: <b class="text-dark">{{ post.settings.textProbability }}%</b><br>
+                                Вероятность аудиозаписей: <b class="text-dark">{{ post.settings.audioProbability }}%</b>
+                                Вероятность изображений: <b class="text-dark">{{ post.settings.pictureProbability }}%</b><br>
+                                <b v-if="post.settings.textRepeat" class="text-primary">Повтор текста</b><br>
+                                <b v-if="post.settings.audioRepeat" class="text-primary">Повтор аудиозаписей</b><br>
+                                <b v-if="post.settings.pictureRepeat" class="text-primary">Повтор изображений</b><br>
                             </div>
                             <div class="mr-auto p-2">
 
+                                Источник: <b class="text-primary" :title="post.url_source"><a :href="post.url_source">{{ post.url_source }}</a></b><br>
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <button type="button" v-bind:class="{'btn btn-secondary': !post.weak.Mon,  'btn btn-success': post.weak.Mon}" disabled>ПН</button>
-                                    <button type="button" v-bind:class="{'btn btn-secondary': !post.weak.Tue,  'btn btn-success': post.weak.Tue}" disabled>ВТ</button>
-                                    <button type="button" v-bind:class="{'btn btn-secondary': !post.weak.Wed,  'btn btn-success': post.weak.Wed}" disabled>СР</button>
-                                    <button type="button" v-bind:class="{'btn btn-secondary': !post.weak.Thu,  'btn btn-success': post.weak.Thu}" disabled>ЧТ</button>
-                                    <button type="button" v-bind:class="{'btn btn-secondary': !post.weak.Fri,  'btn btn-success': post.weak.Fri}" disabled>ПТ</button>
-                                    <button type="button" v-bind:class="{'btn btn-secondary': !post.weak.Sat,  'btn btn-success': post.weak.Sat}" disabled>СБ</button>
-                                    <button type="button" v-bind:class="{'btn btn-secondary': !post.weak.Sun,  'btn btn-success': post.weak.Sun}" disabled>ВС</button>
-                                    <button @click="edit(post)" type="button" class="btn btn-warning" href="#setting">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
-                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                                    <button @click="del(post.id)" type="button" class="btn btn-warning" href="#setting">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
                                         </svg>
                                     </button>
+                                    <button type="button" :class="['btn', {'btn-secondary': !post.weak.Mon,  'btn-success': post.weak.Mon}]" disabled>ПН</button>
+                                    <button type="button" :class="['btn', {'btn-secondary': !post.weak.Tue,  'btn btn-success': post.weak.Tue}]" disabled>ВТ</button>
+                                    <button type="button" :class="['btn', {'btn-secondary': !post.weak.Wed,  'btn btn-success': post.weak.Wed}]" disabled>СР</button>
+                                    <button type="button" :class="['btn', {'btn-secondary': !post.weak.Thu,  'btn btn-success': post.weak.Thu}]" disabled>ЧТ</button>
+                                    <button type="button" :class="['btn', {'btn-secondary': !post.weak.Fri,  'btn btn-success': post.weak.Fri}]" disabled>ПТ</button>
+                                    <button type="button" :class="['btn', {'btn-secondary': !post.weak.Sat,  'btn btn-success': post.weak.Sat}]" disabled>СБ</button>
+                                    <button type="button" :class="['btn', {'btn-secondary': !post.weak.Sun,  'btn btn-success': post.weak.Sun}]" disabled>ВС</button>
+                                    <button @click="send(post.id)" type="button" class="btn btn-primary mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                                            <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
+                                        </svg>
+                                    </button>
+
                                 </div>
                             </div>
-                            <button @click="send(post.id)" type="button" class="btn btn-primary mr-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
-                                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576 6.636 10.07Zm6.787-8.201L1.591 6.602l4.339 2.76 7.494-7.493Z"/>
-                                </svg>
-                            </button>
-                            <!--                                <button @click="del(post.id)" type="button" class="btn btn-warning">-->
-                            <!--                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">-->
-                            <!--                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"></path>-->
-                            <!--                                    </svg>-->
-                            <!--                                </button>-->
-                            <!--                              Удалить можно при редактировании-->
                         </li>
                     </ul>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer" v-if="!groupInfo.id">
                     <footer-menu></footer-menu>
                 </div>
             </div>
         </div>
 
-        <SettingThemePost @updateTimeList="getAllPostTime" ref="settingComponent"></SettingThemePost>
+        <SettingThemePost v-show="groupInfo.id" @updateTimeList="setPostsTime" ref="settingComponent"></SettingThemePost>
 
 
 
@@ -115,17 +132,29 @@ export default {
         },
         setGroup(group){
             this.groupInfo = group;
-            console.log(group.name)
-            this.getAllPostTime(group.id)
+            this.getAllPostTime(group)
             this.$refs.settingComponent.setSettingGroup(group);
         },
-        getAllPostTime(groupid = this.groupInfo.id) {
-            if(groupid) {
-                axios.post('/show-all-post/'+groupid).then((response) => {
+        setPostsTime(item) {
+            console.log(item.posts)
+            this.posts = item.posts;
+        },
+        getAllPostTime(group) {
+            group = this.groupInfo
+            if(group.id) {
+                axios.post('/show-all-post/'+group.id).then((response) => {
                     this.posts = response.data;
-                    console.log(response)
+                    console.log(this.posts)
                 });
             }
+        },
+
+        changeStatus: function(id, newStatus) {
+            axios.post('/change-status-post/'+id, {
+                status: newStatus,
+            }).then((response) => {
+                this.posts = response.data
+            });
         },
         del: function(id) {
             axios.post('/delete-post/'+id).then((response) => {
